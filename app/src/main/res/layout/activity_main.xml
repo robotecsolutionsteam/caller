@@ -1,10 +1,109 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="1dp"
     android:background="#000000"
+    android:gravity="center"
     tools:context=".MainActivity">
+
+    <LinearLayout
+        android:id="@+id/linear_button_spinner01"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/button_speak"
+            android:layout_height="wrap_content"
+            android:layout_width="0dp"
+            android:layout_marginStart="8dp"
+            android:layout_weight="1"
+            android:padding="15dp"
+            android:layout_margin="5dp"
+            android:textStyle="bold"
+            android:textAlignment="center"
+            android:text="SPEECH" />
+
+        <Button
+            android:id="@+id/button_goto"
+            android:layout_height="wrap_content"
+            android:layout_width="0dp"
+            android:layout_marginStart="8dp"
+            android:layout_weight="1"
+            android:padding="15dp"
+            android:layout_margin="5dp"
+            android:textStyle="bold"
+            android:textAlignment="center"
+            android:text="GO TO" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/linear_button_spinner02"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/button_follow"
+            android:layout_height="wrap_content"
+            android:layout_width="0dp"
+            android:layout_marginStart="8dp"
+            android:layout_weight="1"
+            android:padding="15dp"
+            android:layout_margin="5dp"
+            android:textStyle="bold"
+            android:textAlignment="center"
+            android:text="FOLLOW" />
+
+        <Button
+            android:id="@+id/button_turn"
+            android:layout_height="wrap_content"
+            android:layout_width="0dp"
+            android:layout_marginStart="8dp"
+            android:layout_weight="1"
+            android:padding="15dp"
+            android:layout_margin="5dp"
+            android:textStyle="bold"
+            android:textAlignment="center"
+            android:text="TURN" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/linear_button_spinner03"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/button_unfollow"
+            android:layout_height="wrap_content"
+            android:layout_width="0dp"
+            android:layout_marginStart="8dp"
+            android:layout_weight="1"
+            android:padding="15dp"
+            android:layout_margin="5dp"
+            android:textStyle="bold"
+            android:textAlignment="center"
+            android:text="UNFOLLOW" />
+
+        <Button
+            android:id="@+id/button_angle"
+            android:layout_height="wrap_content"
+            android:layout_width="0dp"
+            android:layout_marginStart="8dp"
+            android:layout_weight="1"
+            android:padding="15dp"
+            android:layout_margin="5dp"
+            android:textStyle="bold"
+            android:textAlignment="center"
+            android:text="ANGLE" />
+
+    </LinearLayout>
 
 </LinearLayout>
