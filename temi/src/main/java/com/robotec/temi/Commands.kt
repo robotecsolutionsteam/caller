@@ -6,8 +6,14 @@ import com.robotemi.sdk.TtsRequest
 import com.robotemi.sdk.map.MapModel
 import com.robotec.temi.utils.Request
 import com.robotec.temi.utils.Listener
+import com.robotemi.sdk.constants.CliffSensorMode
+import com.robotemi.sdk.constants.Platform
 import com.robotemi.sdk.navigation.model.Position
 import com.robotemi.sdk.navigation.model.SpeedLevel
+import com.robotemi.sdk.telepresence.Participant
+
+import com.robotemi.sdk.constants.Mode
+import com.robotemi.sdk.constants.SensitivityLevel
 
 class Commands {
 
@@ -100,15 +106,268 @@ class Commands {
         }
     }
 
-    fun enableBillboard() {
+    fun getContatcs(): List<String> {
+        val contactStrings = mutableListOf<String>()
+
         try {
+            val allContacts = temiRobot.allContact
+            Log.d("Commands", "Contatos: $allContacts")
+            for (userInfo in allContacts) {
+                val name = userInfo.name
+                contactStrings.add(name)
+            }
+
+            return contactStrings
+        } catch (e: Exception) {
+            Log.e("Commands", "Erro ao listar os contatos")
+            return emptyList()
+        }
+    }
+
+    fun telepresence() {
+        // setSoundMode
+        try {
+            val target = temiRobot.adminInfo
+            if (target == null) {
+                Log.e("Commands", "target is null.")
+                return
+            }
+            Log.i("Commands", "Contato: $target")
+            temiRobot.startTelepresence(target.name, target.userId, Platform.MOBILE)
+        } catch (e: Exception) {
+            Log.e("Commands", "Erro ao iniciar a telepresença")
+        }
+    }
+
+    fun stopTelepresenca() {
+        temiRobot.stopTelepresence()
+    }
+
+    fun meeting() {
+        try {
+            val target = temiRobot.adminInfo
+            if (target == null) {
+                Log.e("Commands", "target is null.")
+                return
+            }
+            val resp = temiRobot.startMeeting(
+                listOf(
+                    Participant(target.userId, Platform.MOBILE),
+                ), firstParticipantJoinedAsHost = true
+            )
+            Log.d("Commands", "Resultado da reunião $resp")
+        } catch (e: Exception) {
+            Log.e("Commands", "Erro ao iniciar a reunião")
+        }
+    }
+
+    fun getSerial(): String {
+        try {
+            val serial = temiRobot.serialNumber
+            Log.d("Commands", "Serial: $serial")
+            return serial.toString()
+        } catch (e: Exception) {
+            Log.e("Commands", "Erro ao obter o serial")
+            return ""
+        }
+    }
+
+    fun Mode(mode: String) {
+        try {
+            request.requestToBeKioskApp()
+
+            if (mode == "default") {
+                temiRobot.setMode(Mode.DEFAULT)
+                Log.d("Commands", "Modo: $mode")
+            }
+
+            if (mode == "greet") {
+                temiRobot.setMode(Mode.GREET)
+                Log.d("Commands", "Modo: $mode")
+            }
+
+            if (mode == "privacy") {
+                temiRobot.setMode(Mode.PRIVACY)
+                Log.d("Commands", "Modo: $mode")
+            }
+
+        } catch (e: Exception) {
+            Log.e("Commands", "Erro ao solicitar o modo")
+        }
+    }
+
+    fun sensors(baseDepth: Boolean, BaseSensitivity: Int, headDepth: Int, frontTOFE: Boolean, backTOFE: Boolean) {
+        try {
+            request.requestToBeKioskApp()
+
+            if (baseDepth) {
+                temiRobot.groundDepthCliffDetectionEnabled =
+                    !temiRobot.groundDepthCliffDetectionEnabled
+                Log.i("Commands", "Base Depth: Ativado")
+            }
+            if (!baseDepth) {
+                temiRobot.groundDepthCliffDetectionEnabled =
+                    temiRobot.groundDepthCliffDetectionEnabled
+                Log.i("Commands", "Base Depth: Inativo")
+            }
+
+            if (BaseSensitivity == 0) {
+                temiRobot.cliffSensorMode = CliffSensorMode.OFF
+                Log.i("Commands", "Sensibilidade Base: OFF")
+            }
+
+            if (BaseSensitivity == 1) {
+                temiRobot.cliffSensorMode = CliffSensorMode.LOW_SENSITIVITY
+                Log.i("Commands", "Sensibilidade Base: LOW")
+            }
+
+            if (BaseSensitivity == 2) {
+                temiRobot.cliffSensorMode = CliffSensorMode.HIGH_SENSITIVITY
+                Log.i("Commands", "Sensibilidade Base: HIGH")
+            }
+
+            if (headDepth == 1) {
+                temiRobot.headDepthSensitivity = SensitivityLevel.LOW
+                Log.i("Commands", "Sensibilidade Cabeca: LOW")
+            }
+
+            if (headDepth == 2) {
+                temiRobot.headDepthSensitivity = SensitivityLevel.HIGH
+                Log.i("Commands", "Sensibilidade Cabeca: HIGH")
+            }
+
+            if (backTOFE) {
+                temiRobot.backTOFEnabled = !temiRobot.backTOFEnabled
+                Log.i("Commands", "TOFE traseira: Ativado")
+            }
+
+            if (!backTOFE) {
+                temiRobot.backTOFEnabled = temiRobot.backTOFEnabled
+                Log.i("Commands", "TOFE traseira: Inativado")
+            }
+
+            if (frontTOFE) {
+                temiRobot.frontTOFEnabled = !temiRobot.frontTOFEnabled
+                Log.i("Commands", "TOFE traseira: Ativado")
+            }
+
+            if (!frontTOFE) {
+                temiRobot.frontTOFEnabled = temiRobot.frontTOFEnabled
+                Log.i("Commands", "TOFE traseira: Inativado")
+            }
+
+        } catch (e: Exception) {
+            Log.e("Commands", "Erro ao solicitar os sensores")
+        }
+
+    }
+
+    fun getBattery(): Int {
+        try {
+            val batteryData = temiRobot.batteryData
+            if (batteryData != null) {
+                Log.d("Commands", "Bateria: ${batteryData.level.toString()}")
+                return batteryData.level.toInt()
+            }
+        } catch (e: Exception) {
+            Log.e("Commands", "Erro ao obter a bateria")
+            return 0
+        }
+        return 0
+    }
+
+    fun setupSettings(
+        hideTopBar: Boolean,
+        privacyMode: Boolean,
+        isHardButtons: Boolean,
+        wakeup: Boolean,
+        navBillboard: Boolean,
+        topBadge: Boolean,
+        returnOn: Boolean,
+        setvolume: Int,
+        muteAlexa: Boolean) {
+
+        try {
+            request.requestToBeKioskApp()
             request.requestSettings()
 
-            temiRobot.toggleNavigationBillboard(!temiRobot.navigationBillboardDisabled)
-            Log.d("Commands", "Desabilitou o billboard")
+            // config 1
+            if (hideTopBar) {
+                temiRobot.hideTopBar()
+                Log.i("Commands", "Escondeu a barra superior")
+            }
+            // config 2
+            if (privacyMode) {
+                temiRobot.privacyMode = true
+                Log.i("Commands", "Modo privacidade: Ativado")
+            }
+            if (!privacyMode) {
+                temiRobot.privacyMode = false
+                Log.i("Commands", "Modo privacidade: Inativo")
+            }
+            // config 3
+            if (isHardButtons) {
+                temiRobot.isHardButtonsDisabled = true
+                Log.i("Commands", "Botões físicos: Inativo")
+            }
+            if (!isHardButtons) {
+                temiRobot.isHardButtonsDisabled = false
+                Log.i("Commands", "Botões físicos: Ativado")
+            }
+            if (wakeup) {
+                temiRobot.toggleWakeup(true)
+                Log.i("Commands", "Wakeup: Inativo")
+            }
+            if (!wakeup) {
+                temiRobot.toggleWakeup(false)
+                Log.i("Commands", "Wakeup: Ativado")
+            }
+            if (navBillboard) {
+                temiRobot.toggleNavigationBillboard(!temiRobot.navigationBillboardDisabled)
+                Log.i("Commands", "Billboard: Inativo")
+            }
+            if (!navBillboard) {
+                temiRobot.toggleNavigationBillboard(temiRobot.navigationBillboardDisabled)
+                Log.i("Commands", "Billboard: Ativado")
+            }
+
+            if (topBadge) {
+                temiRobot.topBadgeEnabled = false
+                Log.i("Commands", "Top badge: Inativo")
+            }
+
+            if (!topBadge) {
+                temiRobot.topBadgeEnabled = true
+                Log.i("Commands", "Top badge: Ativado")
+            }
+
+            if (returnOn) {
+                temiRobot.autoReturnOn = false
+                Log.i("Commands", "Auto return: Inativo")
+            }
+
+            if (!returnOn) {
+                temiRobot.autoReturnOn = true
+                Log.i("Commands", "Auto return: Ativado")
+            }
+
+            temiRobot.volume = setvolume
+            Log.d("Commands", "Volume: $setvolume")
+
+            if (muteAlexa) {
+                temiRobot.muteAlexa()
+                Log.i("Commands", "Alexa: Inativo")
+            }
+
         } catch (e: Exception) {
-            Log.e("Commands", "Erro ao desabilitar o billboard")
+            Log.e("Commands", "Erro ao configurar as definições")
         }
+    }
+
+    fun desligar() {
+        request.requestToBeKioskApp()
+
+        temiRobot.shutdown()
     }
 
     // ######### NAVIGATION ######### //
@@ -138,6 +397,9 @@ class Commands {
     }
 
     fun goto(local: String, paraTras: Boolean, semDesvio: Boolean, nivelVelocidade: Int): Boolean {
+        // setNavigationSafety()
+        // setMinimumObstacleDistance
+        // setGoToSpeed
         try { 
             val location = local.toString().lowercase().trim { it <= ' ' }
             if (!temiRobot.locations.contains(location)) {
@@ -149,23 +411,27 @@ class Commands {
                 temiRobot.goTo(location, paraTras, semDesvio, SpeedLevel.HIGH)
                 Log.i("Navigation", "Local: $location; Velocidade: Alta")
             }
+
             if (nivelVelocidade == 2) {
                 temiRobot.goTo(location, paraTras, semDesvio, SpeedLevel.MEDIUM)
                 Log.i("Navigation", "Local: $location; Velocidade: Média")
+                Log.w("Navigation", "Antes")
             }
+
             if (nivelVelocidade == 1) {
                 temiRobot.goTo(location, paraTras, semDesvio, SpeedLevel.SLOW)
                 Log.i("Navigation", "Local: $location; Velocidade: Baixa")
             }
             
             return true
+
         } catch (e: Exception) {
             Log.e("Navigation", "Erro ao ir para o local")
             return false
         }
     }
 
-    fun locals(): List<String> {
+    fun getLocals(): List<String> {
         try { 
             val locals = temiRobot.locations
 
@@ -210,13 +476,13 @@ class Commands {
         }
     }
 
-    fun patrula(locais: List<String>, semParar: Boolean, time: Int, waiting: Int) {
+    fun patrol(locais: List<String>, semParar: Boolean, time: Int, waiting: Int) {
         TODO()
     }
 
     // ######### MAP ######### //
 
-    fun maps(): List<String> {
+    fun getMaps(): List<String> {
         try {
             request.requestMaps()
 

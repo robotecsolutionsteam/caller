@@ -33,30 +33,21 @@ class MainActivity : ComponentActivity(), View.OnClickListener{
 
             when (view.id) {
                 R.id.test1 -> {
-                    commands.enableBillboard()
+                    commands.saveLocal("aqui")
                 }
                 R.id.test2 -> {
-                    commands.deleteLocal("sofa")
                 }
                 R.id.test3 -> {
-                    commands.saveLocal("test5")
                 }
                 R.id.test4 -> {
-                    val speed: Float = 0.5f
-                    commands.tiltBy(45, speed)
                 }
                 R.id.test5 -> {
-                    commands.locals()
                 }
                 R.id.test6 -> {
-                    commands.goToPosition(1, 2, 4, false, false, 2)
                 }
                 R.id.test7 -> {
-                    val locations = listOf("test5", "sofa", "cafe")
-                    commands.patrula(locations, false, 0, 3)
                 }
                 R.id.test8 -> {
-                    commands.loadMap("quintoandar", false, 0, 0, 0, false, false)
                 }
             }
         }
