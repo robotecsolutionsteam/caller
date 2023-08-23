@@ -1,4 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
 
+    <uses-permission android:name="android.permission.CAMERA"/>
+    <uses-permission android:name="android.permission.INTERNET" />
+
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+
+    <application>
+        <meta-data
+            android:name="com.robotemi.sdk.metadata.KIOSK"
+            android:value="TRUE" />
+
+        <meta-data
+            android:name="com.robotemi.sdk.metadata.SKILL"
+            android:value="temi" />
+        <meta-data
+            android:name="@string/metadata_permissions"
+            android:value="com.robotemi.permission.face_recognition,
+                           com.robotemi.permission.map,
+                           com.robotemi.permission.settings,
+                           com.robotemi.permission.sequence,
+                           com.robotemi.permission.meetings" />
+    </application>
+
 </manifest>
