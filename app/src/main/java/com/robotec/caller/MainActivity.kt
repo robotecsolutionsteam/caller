@@ -1,54 +1,54 @@
 package com.robotec.caller
 
 import android.os.Bundle
-import android.view.View
+import com.robotec.caller.R
 import androidx.activity.ComponentActivity
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.robotec.caller.databinding.ActivityMainBinding
-import com.robotec.temi.Commands
+import com.robotec.caller.utils.CardAdapter
+import com.robotec.caller.utils.Cardboard
 
-class MainActivity : ComponentActivity(), View.OnClickListener{
+class MainActivity : ComponentActivity(){
 
     private lateinit var binding: ActivityMainBinding
-
-    private val commands = Commands()
+    private lateinit var cardboardRecycler: RecyclerView
+    private lateinit var cardboardList: ArrayList<Cardboard>
+    private lateinit var imageViewID: ArrayList<Int>
+    private lateinit var textViewID: ArrayList<String>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        // Acesso aos elementos de interface via 'binding'
-        binding.test1.setOnClickListener(this)
-        binding.test2.setOnClickListener(this)
-        binding.test3.setOnClickListener(this)
-        binding.test4.setOnClickListener(this)
-        binding.test5.setOnClickListener(this)
-        binding.test6.setOnClickListener(this)
-        binding.test7.setOnClickListener(this)
-        binding.test8.setOnClickListener(this)
+        // TODO: images
+        imageViewID = arrayListOf(
+            R.drawable.navigation,
+            R.drawable.logo,
+            R.drawable.logo,
+            R.drawable.logo,
+        )
 
+        textViewID = arrayListOf(
+            "NAVIGATION",
+            "VOICE",
+            "VISION",
+            "COMMAND"
+        )
+
+        cardboardRecycler = findViewById(R.id.recycler_view)
+        cardboardRecycler.layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
+        cardboardList = arrayListOf<Cardboard>()
+        getUserData()
     }
 
-    override fun onClick(view: View) {
-
-            when (view.id) {
-                R.id.test1 -> {
-                    commands.saveLocal("aqui")
-                }
-                R.id.test2 -> {
-                }
-                R.id.test3 -> {
-                }
-                R.id.test4 -> {
-                }
-                R.id.test5 -> {
-                }
-                R.id.test6 -> {
-                }
-                R.id.test7 -> {
-                }
-                R.id.test8 -> {
-                }
-            }
+    private fun getUserData(){
+        for(i in imageViewID.indices){
+            val cardboard = Cardboard(imageViewID[i], textViewID[i])
+            cardboardList.add(cardboard)
         }
+
+        cardboardRecycler.adapter = CardAdapter(cardboardList)
     }
+}

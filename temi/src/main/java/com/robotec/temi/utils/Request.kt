@@ -21,10 +21,6 @@ class Request {
 
     private var temiRobot: Robot = Robot.getInstance()
 
-    init {
-
-    }
-
     fun requestSettings() {
         if (requestPermissionIfNeeded(Permission.SETTINGS, REQUEST_CODE_NORMAL)) {
             Log.w("Permission", "Não tem permissão para acessar as configurações")
@@ -62,5 +58,29 @@ class Request {
             return
         }
         temiRobot.requestToBeKioskApp()
+    }
+
+    fun requestOnFaceRecognition() {
+
+        requestToBeKioskApp()
+
+        if (requestPermissionIfNeeded(Permission.FACE_RECOGNITION, REQUEST_CODE_FACE_START)) {
+            Log.d("Permission", "Negada Detect")
+            return
+        }
+        temiRobot.startFaceRecognition()
+        Log.d("Permission", "Detect Ativado")
+    }
+
+    fun requestOffFaceRecognition() {
+
+        requestToBeKioskApp()
+
+        if (requestPermissionIfNeeded(Permission.FACE_RECOGNITION, REQUEST_CODE_FACE_START)) {
+            Log.d("Permission", "Negada Detect")
+            return
+        }
+        temiRobot.stopFaceRecognition()
+        Log.d("Permission", "Detect Ativado")
     }
 }
