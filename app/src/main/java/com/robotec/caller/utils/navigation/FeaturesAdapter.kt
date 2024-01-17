@@ -11,8 +11,6 @@ import com.robotec.caller.R
 import com.robotec.temi.navigation.Navigation
 import com.robotec.temi.listener.Status
 
-import com.robotec.temi.Speak
-
 class FeaturesAdapter(private val featuresList : ArrayList<Features>) :
     RecyclerView.Adapter<FeaturesAdapter.FeaturesViewHolder>() {
 
@@ -24,7 +22,6 @@ class FeaturesAdapter(private val featuresList : ArrayList<Features>) :
     override fun onBindViewHolder(holder: FeaturesViewHolder, position: Int) {
 
         val nav = Navigation()
-        val speak = Speak()
 
         val currentItem = featuresList[position]
         holder.imageView.setBackgroundResource(currentItem.imageViewID)

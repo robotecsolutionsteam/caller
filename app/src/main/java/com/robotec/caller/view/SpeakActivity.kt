@@ -6,15 +6,15 @@ import androidx.activity.ComponentActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.robotec.caller.databinding.ActivityNavigationBinding
-import com.robotec.caller.utils.navigation.Features
-import com.robotec.caller.utils.navigation.FeaturesAdapter
+import com.robotec.caller.utils.speak.Speak
+import com.robotec.caller.utils.speak.SpeakAdapter
 
-class NavigationActivity : ComponentActivity(){
+class SpeakActivity : ComponentActivity(){
 
     private lateinit var binding: ActivityNavigationBinding
 
     private lateinit var featureRecycler: RecyclerView
-    private lateinit var featureList: ArrayList<Features>
+    private lateinit var featureList: ArrayList<Speak>
     private lateinit var imageViewID: ArrayList<Int>
     private lateinit var labelViewID: ArrayList<String>
     private lateinit var tittleViewID: ArrayList<String>
@@ -28,42 +28,37 @@ class NavigationActivity : ComponentActivity(){
         setContentView(binding.root)
 
         imageViewID = arrayListOf(
-            R.drawable.navigation,
-            R.drawable.logo,
+            R.drawable.voice,
         )
 
         labelViewID = arrayListOf(
             "Command",
-            "Command",
         )
 
         tittleViewID = arrayListOf(
-            "Go to",
-            "Safety",
+            "Speak",
         )
 
         descriptionViewID = arrayListOf(
-            "Comando para navegar até um local especifico",
-            "Comando para navegar até um local especifico",
+            "Comando para falar",
         )
 
         paramViewID = arrayListOf(
             "Local",
-            "Local, ambiente",
         )
 
         featureRecycler = findViewById(R.id.recycler_view)
         featureRecycler.layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
-        featureList = arrayListOf<Features>()
+        featureList = arrayListOf<Speak>()
         getUserData()
     }
 
     private fun getUserData(){
         for(i in imageViewID.indices){
-            val feature = Features(imageViewID[i], labelViewID[i], tittleViewID[i], descriptionViewID[i], paramViewID[i], "")
+            val feature = Speak(imageViewID[i], labelViewID[i], tittleViewID[i], descriptionViewID[i], paramViewID[i], "")
             featureList.add(feature)
         }
 
-        featureRecycler.adapter = FeaturesAdapter(featureList)
+        featureRecycler.adapter = SpeakAdapter(featureList)
     }
 }

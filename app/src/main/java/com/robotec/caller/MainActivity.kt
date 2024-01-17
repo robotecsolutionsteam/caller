@@ -25,16 +25,12 @@ class MainActivity : ComponentActivity(){
         // TODO: images
         imageViewID = arrayListOf(
             R.drawable.navigation,
-            R.drawable.logo,
-            R.drawable.logo,
-            R.drawable.logo,
+            R.drawable.voice,
         )
 
         textViewID = arrayListOf(
             "NAVIGATION",
             "VOICE",
-            "VISION",
-            "COMMAND"
         )
 
         cardboardRecycler = findViewById(R.id.recycler_view)

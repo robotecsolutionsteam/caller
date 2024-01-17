@@ -9,6 +9,7 @@ import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.RecyclerView
 import com.robotec.caller.R
 import com.robotec.caller.view.NavigationActivity
+import com.robotec.caller.view.SpeakActivity
 
 class CardAdapter(private val cardboardList : ArrayList<Cardboard>) :
     RecyclerView.Adapter<CardAdapter.CardViewHolder>() {
@@ -27,8 +28,15 @@ class CardAdapter(private val cardboardList : ArrayList<Cardboard>) :
         // ############################################################ //
 
         holder.imageView.setOnClickListener {
-            val intent = Intent(it.context, NavigationActivity::class.java)
-            it.context.startActivity(intent)
+            if (position == 0) {
+                val intent = Intent(it.context, NavigationActivity::class.java)
+                it.context.startActivity(intent)
+            }
+            if (position == 1) {
+                val intent = Intent(it.context, SpeakActivity::class.java)
+                it.context.startActivity(intent)
+            }
+
         }
 
         // TODO: Restante das features
