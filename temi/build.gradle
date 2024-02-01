@@ -63,7 +63,6 @@ java {
     }
 }
 
-
 java {
     sourceCompatibility = JavaVersion.VERSION_17            
     targetCompatibility = JavaVersion.VERSION_17
@@ -96,7 +95,7 @@ dependencies {
 publishing {
     publications {
         maven(MavenPublication) {
-            groupId = 'com.github.Nicolasalan'
+            groupId = 'com.github.robotecsolutionsteam'
             artifactId = 'temi'
             version = "1.0.5"
             pom {

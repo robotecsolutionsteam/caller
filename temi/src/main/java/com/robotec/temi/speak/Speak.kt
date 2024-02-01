@@ -15,29 +15,6 @@ class Voice {
     private var temiRobot: Robot = Robot.getInstance()
     private val request = Request()
 
-    enum class sttLanguage(val value: Int) {
-        SYSTEM(0),
-        EN_US(1),
-        ZH_CN(2),
-        JA_JP(3),
-        KO_KR(4),
-        ZH_HK(5),
-        ZH_TW(6),
-        DE_DE(7),
-        TH_TH(8),
-        IN_ID(9),
-        PT_BR(10),
-        AR_EG(11),
-        FR_CA(12),
-        FR_FR(13),
-        ES_ES(14),
-        CA_ES(15),
-        IW_IL(16),
-        IT_IT(17),
-        ET_EE(18),
-        TR_TR(19);
-    }
-
     fun speak(text: String, onComplete: () -> Unit) {
         try {
             temiRobot.speak(TtsRequest.create(text, false))
@@ -74,30 +51,29 @@ class Voice {
 
         enableWakeup()
 
-//            val wakeStatus = object : Robot.WakeupWordListener {
-//                override fun onWakeupWord(
-//                    wakeupWord: String,
-//                    direction: Int
-//                ) {
-//                    println("WAKEUP: $wakeupWord , $direction")
-//                    if (wakeupWord == "hi temi") {
-//
-//                        temiRobot.removeWakeupWordListener(this)
-//                    }
-//                }
-//            }
-//            temiRobot.addWakeupWordListener(wakeStatus)
+        val wakeStatus = object : Robot.WakeupWordListener {
+            override fun onWakeupWord(
+                wakeupWord: String,
+                direction: Int
+            ) {
+                println("WAKEUP: $wakeupWord , $direction")
+                if (wakeupWord == "hi temi") {
 
-        val asrStatus = object : Robot.AsrListener {
-            override fun onAsrResult(asrResult: String, sttLanguage: SttLanguage) {
-                println("ASR: $asrResult")
-                temiRobot.addAsrListener(this)
+                    temiRobot.removeWakeupWordListener(this)
+                }
             }
         }
-        temiRobot.removeAsrListener(asrStatus)
+        temiRobot.addWakeupWordListener(wakeStatus)
 
-        disableWakeup()
-
+//        val asrStatus = object : Robot.AsrListener {
+//            override fun onAsrResult(asrResult: String, sttLanguage: SttLanguage) {
+//                println("ASR: $asrResult")
+//                temiRobot.addAsrListener(this)
+//            }
+//        }
+//        temiRobot.removeAsrListener(asrStatus)
+//
+//        disableWakeup()
     }
 
 //    private fun disableWakeup() {
