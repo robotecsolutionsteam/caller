@@ -1,5 +1,22 @@
-# Created by https://www.toptal.com/developers/gitignore/api/androidstudio,android,kotlin,java,gradle,git,macos,windows,linux
-# Edit at https://www.toptal.com/developers/gitignore?templates=androidstudio,android,kotlin,java,gradle,git,macos,windows,linux
+*.iml
+.gradle
+/local.properties
+/.idea/caches
+/.idea/libraries
+/.idea/modules.xml
+/.idea/workspace.xml
+/.idea/navEditor.xml
+/.idea/assetWizardSettings.xml
+.DS_Store
+/build
+/captures
+.externalNativeBuild
+.cxx
+local.properties
+
+
+# Created by https://www.toptal.com/developers/gitignore/api/androidstudio,android,gradle,kotlin,java,macos,windows
+# Edit at https://www.toptal.com/developers/gitignore?templates=androidstudio,android,gradle,kotlin,java,macos,windows
 
 ### Android ###
 # Gradle files
@@ -42,21 +59,6 @@ gen-external-apklibs
 # Replacement of .externalNativeBuild directories introduced
 # with Android Studio 3.5.
 
-### Git ###
-# Created by git for backups. To disable backups in Git:
-# $ git config --global mergetool.keepBackup false
-*.orig
-
-# Created by git when using merge tools for conflicts
-*.BACKUP.*
-*.BASE.*
-*.LOCAL.*
-*.REMOTE.*
-*_BACKUP_*.txt
-*_BASE_*.txt
-*_LOCAL_*.txt
-*_REMOTE_*.txt
-
 ### Java ###
 # Compiled class file
 *.class
@@ -94,21 +96,6 @@ replay_pid*
 # Package Files #
 
 # virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
-
-### Linux ###
-*~
-
-# temporary files which can be created if a process still has a handle open of a deleted file
-.fuse_hidden*
-
-# KDE directory preferences
-.directory
-
-# Linux trash folder which might appear on any partition or disk
-.Trash-*
-
-# .nfs files are created when an open file is removed but is still being accessed
-.nfs*
 
 ### macOS ###
 # General
@@ -232,6 +219,7 @@ proguard/
 /*/*/production
 .navigation/
 *.ipr
+*~
 *.swp
 
 # Keystore files
@@ -308,4 +296,8 @@ fabric.properties
 
 !/gradle/wrapper/gradle-wrapper.jar
 
-# End of https://www.toptal.com/developers/gitignore/api/androidstudio,android,kotlin,java,gradle,git,macos,windows,linux
+# End of https://www.toptal.com/developers/gitignore/api/androidstudio,android,gradle,kotlin,java,macos,windows
+
+**/.DS_Store
+
+.idea/

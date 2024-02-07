@@ -7,6 +7,14 @@
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
+    <uses-permission
+        android:name="android.permission.BLUETOOTH"
+        android:maxSdkVersion="32" />
+    <uses-permission
+        android:name="android.permission.BLUETOOTH_ADMIN"
+        android:maxSdkVersion="30" />
+    <uses-permission android:name="android.permission.BLUETOOTH_CONNECT" />
+
     <application>
         <meta-data
             android:name="com.robotemi.sdk.metadata.KIOSK"
@@ -43,6 +51,11 @@
                            com.robotemi.permission.settings,
                            com.robotemi.permission.sequence,
                            com.robotemi.permission.meetings" />
+
+        <service
+            android:name=".SerialService"
+            android:foregroundServiceType="remoteMessaging|connectedDevice" />
+            
     </application>
 
 </manifest>

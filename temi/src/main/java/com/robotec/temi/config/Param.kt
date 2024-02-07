@@ -16,5 +16,4 @@ class Param {
     fun setSafetyMode() {
         temiRobot.navigationSafety
     }
-
 }
