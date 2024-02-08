@@ -97,7 +97,7 @@ publishing {
         maven(MavenPublication) {
             groupId = 'com.github.robotecsolutionsteam'
             artifactId = 'temi'
-            version = "1.0.0"
+            version = "1.0.1"
             pom {
                 description = 'First Temi Library'
             }
