@@ -2,7 +2,6 @@ pluginManagement {
     repositories {
         google()
         mavenCentral()
-        maven { url 'https://jitpack.io' }
         gradlePluginPortal()
     }
 }
@@ -15,4 +14,4 @@ dependencyResolutionManagement {
 }
 rootProject.name = "caller"
 include ':app'
-include ':temi'
+include ':caller'
