@@ -5,18 +5,6 @@
   "scripts": {
     "docs:dev": "vitepress dev",
     "docs:build": "vitepress build",
-    "docs:preview": "vitepress preview"
-  },
-  "name": "caller",
-  "version": "1.0.0",
-  "main": "index.js",
-  "directories": {
-    "doc": "docs"
-  },
-  "author": "",
-  "license": "ISC",
-  "description": "",
-  "dependencies": {
-    "vue": "^3.4.16"
+    "docs:preview": "vitepress preview docs --port 8080"
   }
 }
