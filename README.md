@@ -41,13 +41,13 @@ make install
 
 
 ## **Baixe o repositório:**
-```kotlin
 Instalar o SDK:
 
 ```kotlin
 dependencies {
+	...
 	implementation 'com.github.robotecsolutionsteam:caller:Tag'
-	}
+}
 ```
 
 ## **Testes Automatizados**
