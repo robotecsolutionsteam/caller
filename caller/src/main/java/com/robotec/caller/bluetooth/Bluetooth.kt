@@ -11,6 +11,7 @@ import android.text.SpannableStringBuilder
 import android.widget.Toast
 import java.util.ArrayDeque
 
+@Suppress("DEPRECATION")
 class Bluetooth: ServiceConnection, SerialListener {
 
     private var globalResponse: SpannableStringBuilder = SpannableStringBuilder()
