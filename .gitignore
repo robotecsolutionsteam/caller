@@ -404,3 +404,61 @@ typings/
 
 # TernJS port file
 .tern-port
+
+# Created by https://www.toptal.com/developers/gitignore/api/nextjs,yarn
+# Edit at https://www.toptal.com/developers/gitignore?templates=nextjs,yarn
+
+### NextJS ###
+# dependencies
+docs/node_modules
+docs/.pnp
+docs/.pnp.js
+
+# testing
+docs/coverage
+
+# next.js
+docs/.next/
+docs/out/
+
+# production
+docs/build
+
+# misc
+docs/.DS_Store
+docs/*.pem
+
+# debug
+docs/npm-debug.log*
+docs/yarn-debug.log*
+docs/yarn-error.log*
+docs/.pnpm-debug.log*
+
+# local env files
+docs/.env*.local
+
+# vercel
+docs/.vercel
+
+# typescript
+docs/*.tsbuildinfo
+docs/next-env.d.ts
+
+### yarn ###
+# https://yarnpkg.com/getting-started/qa#which-files-should-be-gitignored
+
+docs/.yarn/*
+docs/!.yarn/releases
+docs/!.yarn/patches
+docs/!.yarn/plugins
+docs/!.yarn/sdks
+docs/!.yarn/versions
+
+# if you are NOT using Zero-installs, then:
+# comment the following lines
+docs/!.yarn/cache
+
+# and uncomment the following lines
+# .pnp.*
+
+# End of https://www.toptal.com/developers/gitignore/api/nextjs,yarn
