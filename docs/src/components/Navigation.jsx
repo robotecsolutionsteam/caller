@@ -184,23 +184,34 @@ function NavigationGroup({ group, className }) {
 
 export const navigation = [
   {
-    title: 'Getting Started',
+    title: 'Começando',
     links: [
-      { title: 'Getting Started', href: '/' },      
+      { title: 'Começando', href: '/' },      
     ],
   },
   {
-    title: 'How-To Guides',
+    title: 'Funções',
     links: [
-      { title: 'Install', href: '/quick/install' },
-      { title: 'Setup', href: '/quick/setup' },
-      { title: 'Log', href: '/quick/log' },
+      { title: 'Bluetooth', href: '/funcoes/bluetooth' },
+      { title: 'Câmera', href: '/funcoes/camera' },
     ],
   },
   {
-    title: 'Examples',
+    title: 'Visão',
     links: [
-      { title: 'Kotlin', href: '/examples/kotlin' },
+      { title: 'Face', href: '/visao/face' },
+    ],
+  },
+  {
+    title: 'Fala',
+    links: [
+      { title: 'Falar', href: '/fala/speak' },
+    ],
+  },
+  {
+    title: 'Navegação',
+    links: [
+      { title: 'Goto', href: '/navegacao/goto' },
     ],
   },
 ]

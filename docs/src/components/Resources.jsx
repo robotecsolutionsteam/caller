@@ -5,13 +5,15 @@ import { Heading } from '@/components/Heading'
 
 import { CopyIcon } from '@/components/icons/CopyIcon'
 import { PackageIcon } from '@/components/icons/PackageIcon'
+import { BookIcon } from '@/components/icons/BookIcon'
+import { CogIcon } from '@/components/icons/CogIcon'
 
 const resources = [
   {
-    href: '/messages',
-    name: 'How-To Guides',
+    href: '/funcoes/bluetooth',
+    name: 'Funções',
     description:
-      '...',
+      'Funções genéricas e Devices',
     icon: PackageIcon, 
     pattern: {
       y: 32,
@@ -22,11 +24,39 @@ const resources = [
     },
   },
   {
-    href: '/messages',
-    name: 'Examples',
+    href: '/visao/face',
+    name: 'Visão',
     description:
-      '...',
+      'Sistema de visão do Temi',
     icon: CopyIcon,
+    pattern: {
+      y: 32,
+      squares: [
+        [0, 2],
+        [1, 4],
+      ],
+    },
+  },
+  {
+    href: '/fala/speak',
+    name: 'Fala',
+    description:
+      'Sistema de Fala do Temi',
+    icon: BookIcon,
+    pattern: {
+      y: 32,
+      squares: [
+        [0, 2],
+        [1, 4],
+      ],
+    },
+  },
+  {
+    href: '/navegacao/goto',
+    name: 'Navegação',
+    description:
+      'Sistema de Navegação do Temi',
+    icon: CogIcon,
     pattern: {
       y: 32,
       squares: [

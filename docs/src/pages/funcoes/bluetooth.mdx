@@ -1,0 +1,41 @@
+# Bluetooth
+
+---
+
+* Se conectar a um dispositivo Bluetooth
+* Mandar mensagem com o Bluetooth
+* Receber mensagem com o Bluetooth
+
+## Mandar mensagem com o Bluetooth
+
+<Row>
+  <Col>
+    Precisa de um endereço MAC para se conectar ao dispositivo.
+  </Col>
+  <Col>
+
+    ```bash {{ title: "kotlin" }}
+    class MainActivity : ComponentActivity(), View.OnClickListener {
+      ...
+
+      // colocar o bluetoothInstance como variável global
+      private val bluetoothInstance = Bluetooth()
+
+      override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+        binding = ActivityMainBinding.inflate(layoutInflater)
+        setContentView(binding.root)
+
+        // setar o contexto
+        bluetoothInstance.setContext(this, "seu_endereco_mac")
+
+        // iniciar o serviço do bluetooth
+        bluetoothInstance.startBluetoothService()
+
+        // mandar mensagem com o bluetooth
+        bluetoothInstance.send("sua_mensagem")
+
+    ```
+  </Col>
+</Row>
