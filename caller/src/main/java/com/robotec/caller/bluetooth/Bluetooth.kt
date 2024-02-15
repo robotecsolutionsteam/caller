@@ -17,11 +17,14 @@ class Bluetooth: ServiceConnection, SerialListener {
     private var globalResponse: SpannableStringBuilder = SpannableStringBuilder()
 
     private var context: Context? = null
+    private var address: String = ""
 
     private val handler = Handler()
 
-    fun setContext(context: Context) {
+    fun setContext(context: Context, mac: String) {
         this.context = context
+        address = mac
+
     }
 
     fun response(): String {
@@ -92,7 +95,7 @@ class Bluetooth: ServiceConnection, SerialListener {
     private fun connect() {
         try {
             val bluetoothAdapter = BluetoothAdapter.getDefaultAdapter()
-            val device = bluetoothAdapter.getRemoteDevice("FC:B4:67:50:FD:A6")
+            val device = bluetoothAdapter.getRemoteDevice(address)
             println("connecting...")
             connected = Connected.Pending
             val socket = SerialSocket(context?.applicationContext, device)
