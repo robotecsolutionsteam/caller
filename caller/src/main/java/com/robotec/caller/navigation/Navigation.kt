@@ -5,9 +5,12 @@ import com.robotec.caller.listener.Status
 import com.robotec.caller.utils.Request
 import com.robotemi.sdk.Robot
 import com.robotemi.sdk.TtsRequest
-import com.robotemi.sdk.listeners.OnBeWithMeStatusChangedListener
-import com.robotemi.sdk.listeners.OnConstraintBeWithStatusChangedListener
 import com.robotemi.sdk.listeners.OnGoToLocationStatusChangedListener
+import com.robotemi.sdk.navigation.listener.OnCurrentPositionChangedListener
+import com.robotemi.sdk.navigation.listener.OnDistanceToLocationChangedListener
+import com.robotemi.sdk.navigation.listener.OnReposeStatusChangedListener
+
+import com.robotemi.sdk.navigation.model.Position
 
 class Navigation {
 
@@ -57,6 +60,28 @@ class Navigation {
 
         } catch (e: Exception) {
             Log.e("TemiCaller", "Erro ao navegar, local: $local")
+            onComplete.invoke()
+        }
+    }
+
+    fun goToPosition(x: Float, y: Float, angle: Float, onComplete: () -> Unit) {
+        try {
+
+            temiRobot.goToPosition(Position(x, y, angle, 0), backwards = false, noBypass = false)
+
+            val goToStatus = object : OnCurrentPositionChangedListener {
+                override fun onCurrentPositionChanged(
+                    position: Position,
+                ) {
+                    Log.w("Navigation", "Posição do robô: $position")
+                    temiRobot.removeOnCurrentPositionChangedListener(this)
+                    onComplete.invoke()
+                }
+            }
+            temiRobot.addOnCurrentPositionChangedListener(goToStatus)
+
+        } catch (e: Exception) {
+            Log.e("TemiCaller", "Erro ao navegar local")
             onComplete.invoke()
         }
     }
@@ -130,6 +155,7 @@ class Navigation {
     fun deleteLocal(location: String, onComplete: () -> Unit) {
         try {
             temiRobot.deleteLocation(location)
+            Log.e("TemiCaller", "Local $location deletado")
             onComplete.invoke()
         } catch (e: Exception) {
             Log.e("TemiCaller", "Erro ao deletar local")
@@ -150,6 +176,21 @@ class Navigation {
                 Log.w("Navigation", "Local não existe")
             }
             temiRobot.goTo(location, backwards, noBypass)
+
+            val distanceStatus = object : OnDistanceToLocationChangedListener {
+                override fun onDistanceToLocationChanged(
+                    distances: Map<String, Float>
+                ) {
+                    var text = "Distance:\n"
+                    for (location in distances.keys) {
+                        text +=
+                            " -> $location :: ${distances[location]}\n"
+                    }
+                    Log.w("Navigation", text)
+                    temiRobot.removeOnDistanceToLocationChangedListener(this)
+                }
+            }
+            temiRobot.addOnDistanceToLocationChangedListener(distanceStatus)
 
             val goToStatus = object : OnGoToLocationStatusChangedListener {
                 override fun onGoToLocationStatusChanged(
@@ -185,6 +226,32 @@ class Navigation {
         } catch (e: Exception) {
             Log.e("TemiCaller", "Erro ao navegar, local: $local")
             onComplete.invoke()
+        }
+    }
+
+    fun reposicionar(onComplete: () -> Unit) {
+        try {
+            temiRobot.repose()
+
+            val reposeStatus = object : OnReposeStatusChangedListener {
+                override fun onReposeStatusChanged(
+                    status: Int,
+                    description: String,
+                ) {
+                    Log.d("Descrição de reposição", description)
+
+                    if (description.isNotBlank()) {
+                        if (status == 4) {
+                            Log.d("TemiCaller", "Status repose: $status")
+                            temiRobot.removeOnReposeStatusChangedListener(this)
+                            onComplete.invoke()
+                        }
+                    }
+                }
+            }
+            temiRobot.addOnReposeStatusChangedListener(reposeStatus)
+        } catch (e: Exception) {
+            Log.e("TemiCaller", "Erro ao se posicionar")
         }
     }
 }
