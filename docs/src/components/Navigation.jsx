@@ -211,7 +211,8 @@ export const navigation = [
   {
     title: 'Navegação',
     links: [
-      { title: 'Goto', href: '/navegacao/goto' },
+      { title: 'Navigation', href: '/navegacao/navigation' },
+      { title: 'Follow', href: '/navegacao/follow' },
     ],
   },
 ]

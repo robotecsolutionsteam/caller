@@ -1,0 +1,62 @@
+# Follow Me
+Seguir pessoas 
+---
+
+* Importação
+* Follow Normal
+* Follow Restrito
+
+## Importação
+
+<Row>
+  <Col>
+    Importar o Caller.
+  </Col>
+  <Col>
+
+    ```bash {{ title: "kotlin" }}
+    import com.robotec.caller.follow.FollowMe 
+    ```
+  </Col>
+  <Col>
+    Colocar o Follow Me em variável global.
+  </Col>
+  <Col>
+
+    ```bash {{ title: "kotlin" }}
+    private val followMe = FollowMe()
+    ```
+  </Col>
+</Row>
+
+## Follow Normal
+
+<Row>
+  <Col>
+    Iniciar follow me normal.
+  </Col>
+  <Col>
+
+    ```bash {{ title: "kotlin" }}
+    followMe.follow() {
+      // Código de callback
+    }
+    ```
+  </Col>
+</Row>
+
+## Follow Restrito
+
+<Row>
+  <Col>
+    Iniciar follow me restrito.
+  </Col>
+  <Col>
+
+    ```bash {{ title: "kotlin" }}
+    followMe.followRestricted() {
+        // Código de callback
+    }
+    ```
+  </Col>
+</Row>

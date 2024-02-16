@@ -11,5 +11,5 @@ class Face {
     private var temiRobot: Robot = Robot.getInstance()
     private val request = Request()
 
-    
+
 }

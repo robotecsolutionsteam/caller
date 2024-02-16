@@ -127,49 +127,6 @@ class Navigation {
         }
     }
 
-    fun followMe(onComplete: () -> Unit) {
-        try {
-            temiRobot.beWithMe()
-            val followStatus = object : OnBeWithMeStatusChangedListener {
-                override fun onBeWithMeStatusChanged(
-                    status: String,
-                ) {
-                    if (status == "abort") {
-                        Log.d("TemiCaller", "Follow abortado")
-                        temiRobot.removeOnBeWithMeStatusChangedListener(this)
-                        onComplete.invoke()
-                    }
-                }
-            }
-            temiRobot.addOnBeWithMeStatusChangedListener(followStatus)
-
-        } catch (e: Exception) {
-            Log.e("TemiCaller", "Erro ao seguir [Me]")
-            onComplete.invoke()
-        }
-    }
-
-    fun followRestricted(onComplete: () -> Unit) {
-        try {
-            temiRobot.constraintBeWith()
-            val followRestrictedStatus = object : OnConstraintBeWithStatusChangedListener {
-                override fun onConstraintBeWithStatusChanged(
-                    isConstraint: Boolean,
-                ) {
-                    if (isConstraint == false) {
-                        Log.d("TemiCaller", "Follow abortado")
-                        temiRobot.removeOnConstraintBeWithStatusChangedListener(this)
-                        onComplete.invoke()
-                    }
-                }
-            }
-            temiRobot.addOnConstraintBeWithStatusChangedListener(followRestrictedStatus)
-        } catch (e: Exception) {
-            Log.e("TemiCaller", "Erro ao seguir [Restrito]")
-            onComplete.invoke()
-        }
-    }
-
     fun deleteLocal(location: String, onComplete: () -> Unit) {
         try {
             temiRobot.deleteLocation(location)
