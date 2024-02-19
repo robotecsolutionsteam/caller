@@ -1,9 +1,14 @@
-# Sistema de Navegação 
-Goto, save local, etc.
+# Movimentação
+Move, turn, tilt, etc.
 ---
 
 * Importação
-* Salvar Local
+* Mover robô manualmente
+* Rotacionar robô manualmente
+* Inclinar cabeça para determinado ângulo
+* Inclinar cabeça em determinado ângulo
+* Parar movimento
+* Iniciar patrulha
 
 ## Importação
 
@@ -14,16 +19,16 @@ Goto, save local, etc.
   <Col>
 
     ```bash {{ title: "kotlin" }}
-    import com.robotec.caller.navigation.Navigation 
+    import com.robotec.caller.movements.Movements 
     ```
   </Col>
   <Col>
-    Colocar o Navigation em variável global.
+    Colocar o Movements em variável global.
   </Col>
   <Col>
 
     ```bash {{ title: "kotlin" }}
-    private val navigation = Navigation()
+    private val movements = Movements()
     ```
   </Col>
 </Row>
