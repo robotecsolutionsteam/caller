@@ -4,6 +4,12 @@ Goto, save local, etc.
 
 * Importação
 * Salvar Local
+* Deletar Local
+* Obter Locais Salvos
+* GoTo Simples
+* GoTo Completo
+* GoTo Posição
+* Reposicionar
 
 ## Importação
 
@@ -28,26 +34,152 @@ Goto, save local, etc.
   </Col>
 </Row>
 
-
 ## Salvar Local
 
 <Row>
   <Col>
-    Importar o Caller.
+      Chamar o método **saveLocal**.
+      ### Parâmetros
+      * local ->  **String**.
+
+      ### Retornos
+      * None
   </Col>
   <Col>
 
     ```bash {{ title: "kotlin" }}
-    import com.robotec.caller.navigation.Navigation 
+    navigation.saveLocal(local) {
+      // Código de callback
+    }
     ```
   </Col>
+</Row>
+
+## Deletar Local
+
+<Row>
   <Col>
-    Colocar o Navigation em variável global.
+      Chamar o método **deletelocal**. Passando como 
+      ### Parâmetros
+      * local ->  **String**.
+
+      ### Retornos
+      * None
   </Col>
   <Col>
 
     ```bash {{ title: "kotlin" }}
-    private val navigation = Navigation()
+    navigation.deleteLocal(local) {
+      // Código de callback
+    }
     ```
+  </Col>
+</Row>
+
+## Obter Locais Salvos
+
+<Row>
+  <Col>
+      Chamar o método **getlocations**.
+      ### Parâmetros
+      * None
+
+      ### Retornos
+      * locals -> **List String**
+  </Col>
+  <Col>
+
+    ```bash {{ title: "kotlin" }}
+    val locals = navigation.getLocations()
+    ```
+  </Col>
+</Row>
+
+## GoTo Simples
+
+<Row>
+  <Col>
+      Chamar o método **goto**.
+      ### Parâmetros
+      * local -> String
+
+      ### Retornos
+      * None
+  </Col>
+  <Col>
+
+    ```bash {{ title: "kotlin" }}
+    navigation.goTo(local) {
+      // Código de callback
+    }
+    ```
+  </Col>
+</Row>
+
+## GoTo Completo
+
+<Row>
+  <Col>
+      Chamar o método **gotocomplex**.
+      ### Parâmetros
+      * local -> String
+      * Ré -> Boolean
+      * Sem Desvio -> Boolean
+
+      ### Retornos
+      * None
+  </Col>
+  <Col>
+
+    ```bash {{ title: "kotlin" }}
+    navigation.goToComplex(local, backwards, noBypass) {
+      // Código de callback
+    }
+    ```
+  </Col>
+</Row>
+
+## GoTo Posição
+
+<Row>
+  <Col>
+      Chamar o método **gotoposition**.
+      ### Parâmetros
+      * x -> Float
+      * y -> Float
+      * angle -> Float
+
+      ### Retornos
+      * None
+  </Col>
+  <Col>
+
+    ```bash {{ title: "kotlin" }}
+    navigation.goToPosition(x, y, angle) {
+      // Código de callback
+    }
+    ```
+  </Col>
+</Row>
+
+
+## Reposicionar
+
+<Row>
+  <Col>
+      Chamar o método **reposicionar**.
+      ### Parâmetros
+      * None
+
+      ### Retornos
+      * None
+  </Col>
+  <Col>
+
+    ```bash {{ title: "kotlin" }}
+    navigation.reposicionar() {
+      // Código de callback
+    }
+    ``` 
   </Col>
 </Row>
