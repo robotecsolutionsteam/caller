@@ -93,7 +93,7 @@ class Voice {
         temiRobot.cancelAllTtsRequests()
     }
 
-    fun enableWakeup() {
+    private fun enableWakeup() {
         request.requestSettings()
         temiRobot.toggleWakeup(false)
     }
