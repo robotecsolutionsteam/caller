@@ -14,6 +14,7 @@ class Movements {
     private var temiRobot: Robot = Robot.getInstance()
     private val request = Request()
 
+
     fun moveRobot(distance_x: Float, distance_y: Float, onComplete: () -> Unit) {
         try {
             if (distance_x > -1 && distance_x < 1) {
@@ -148,7 +149,6 @@ class Movements {
                 com.robotec.caller.listener.Status.currentLiftedStatus = isLifted
                 onComplete.invoke()
             }
-
         }
         temiRobot.addOnRobotLiftedListener(liftedStatus)
         return Status.currentLiftedStatus

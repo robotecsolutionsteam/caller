@@ -213,6 +213,7 @@ export const navigation = [
     links: [
       { title: 'Navigation', href: '/navegacao/navigation' },
       { title: 'Follow', href: '/navegacao/follow' },
+      { title: 'Movements', href: '/movimentos/movement' }
     ],
   },
 ]
