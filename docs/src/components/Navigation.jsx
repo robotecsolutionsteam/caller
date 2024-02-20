@@ -200,6 +200,7 @@ export const navigation = [
     title: 'Visão',
     links: [
       { title: 'Face', href: '/visao/face' },
+      { title: 'Detecção', href: '/visao/detection' },
     ],
   },
   {

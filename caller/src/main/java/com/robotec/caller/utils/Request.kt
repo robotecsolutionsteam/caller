@@ -83,4 +83,18 @@ class Request {
         temiRobot.stopFaceRecognition()
         Log.d("Permission", "Detect Ativado")
     }
+
+    fun requestDetectionMode() {
+        if (requestPermissionIfNeeded(Permission.SETTINGS, REQUEST_CODE_NORMAL)) {
+            return
+        }
+        temiRobot.detectionModeOn = !temiRobot.detectionModeOn
+    }
+
+    fun requestTrackUser() {
+        if (requestPermissionIfNeeded(Permission.SETTINGS, REQUEST_CODE_NORMAL)) {
+            return
+        }
+        temiRobot.trackUserOn = !temiRobot.trackUserOn
+    }
 }
