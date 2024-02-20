@@ -1,0 +1,88 @@
+# Sistema de Mapas 
+load, list, infos, etc.
+---
+
+* Importação
+* Imagem do mapa
+* Lista de mapas
+* Abrir o mapa
+
+## Importação
+
+<Row>
+  <Col>
+    Importar o Caller.
+  </Col>
+  <Col>
+
+    ```bash {{ title: "kotlin" }}
+    import com.robotec.caller.navigation.Navigation 
+    ```
+  </Col>
+  <Col>
+    Colocar o Navigation em variável global.
+  </Col>
+  <Col>
+
+    ```bash {{ title: "kotlin" }}
+    private val maps = Maps()
+    ```
+  </Col>
+</Row>
+
+## Imagem do mapa
+
+<Row>
+  <Col>
+      Chamar o método **mapimage**.
+      ### Parâmetros
+      * id ->  **String**.
+
+      ### Retornos
+      * MapImage
+  </Col>
+  <Col>
+
+    ```bash {{ title: "kotlin" }}
+    val mapimage = maps.mapImage(local)
+    ```
+  </Col>
+</Row>
+
+## Lista de mapas
+
+<Row>
+  <Col>
+      Chamar o método **maplist**.
+
+      ### Retornos
+      * List MapModel
+  </Col>
+  <Col>
+
+    ```bash {{ title: "kotlin" }}
+    val mapList = maps.mapList()
+    ```
+  </Col>
+</Row>
+
+
+## Abrir o mapa
+
+<Row>
+  <Col>
+      Chamar o método **loadmap**.
+
+      ### Parâmetros
+      * id ->  **String**.
+
+  </Col>
+  <Col>
+
+    ```bash {{ title: "kotlin" }}
+    maps.loadMap(id) {
+        // Callback
+    }
+    ```
+  </Col>
+</Row>

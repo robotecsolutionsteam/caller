@@ -1,7 +1,6 @@
 package com.robotec.caller.navigation
 
 import android.util.Log
-import com.robotec.caller.listener.Status
 import com.robotec.caller.utils.Request
 import com.robotemi.sdk.Robot
 import com.robotemi.sdk.TtsRequest
