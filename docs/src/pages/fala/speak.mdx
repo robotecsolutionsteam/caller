@@ -1,0 +1,83 @@
+# Sistema de Fala 
+speak, stop, 
+---
+
+* Importação
+* Falar
+* Reconhecimento de fala
+* Parar fala
+
+## Importação
+
+<Row>
+  <Col>
+    Importar o Caller.
+  </Col>
+  <Col>
+
+    ```bash {{ title: "kotlin" }}
+    import com.robotec.caller.speak.Voice 
+    ```
+  </Col>
+  <Col>
+    Colocar o Navigation em variável global.
+  </Col>
+  <Col>
+
+    ```bash {{ title: "kotlin" }}
+    private val voice = Voice()
+    ```
+  </Col>
+</Row>
+
+## Falar
+
+<Row>
+  <Col>
+      Chamar o método **Speak**.
+      ### Parâmetros
+      * text ->  **String**.
+
+  </Col>
+  <Col>
+
+    ```bash {{ title: "kotlin" }}
+    voice.speak(text) {
+        // callback
+    }
+    ```
+  </Col>
+</Row>
+
+## Reconhecimento de fala
+
+<Row>
+  <Col>
+      Chamar o método **wakeup**.
+
+  </Col>
+  <Col>
+
+    ```bash {{ title: "kotlin" }}
+    voice.wakeUp() {
+        // callback
+    }
+    ```
+  </Col>
+</Row>
+
+
+## parar de falar
+
+<Row>
+  <Col>
+      Chamar o método **stopSpeak**.
+
+  </Col>
+  <Col>
+
+    ```bash {{ title: "kotlin" }}
+    voice.stopSpeak()
+    ```
+  </Col>
+</Row>

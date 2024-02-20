@@ -1,16 +1,13 @@
 package com.robotec.caller.speak
 
 import android.util.Log
-import com.robotec.caller.listener.Status
 import com.robotec.caller.utils.Request
 import com.robotemi.sdk.Robot
 import com.robotemi.sdk.TtsRequest
 
-import android.content.pm.PackageManager
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import com.robotemi.sdk.SttLanguage
-import com.robotemi.sdk.constants.SdkConstants
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
@@ -53,87 +50,51 @@ class Voice {
         }
     }
 
-    fun wakeUp() {
+    fun wakeUp(onComplete: () -> Unit) {
 
         request.requestToBeKioskApp()
 
         enableWakeup()
         temiRobot.wakeup()
 
-        val asrStatus = object : Robot.AsrListener {
-            override fun onAsrResult(
-                asrResult: String,
-                sttLanguage: SttLanguage,
-            ) {
+        try {
+            val asrStatus = object : Robot.AsrListener {
+                override fun onAsrResult(
+                    asrResult: String,
+                    sttLanguage: SttLanguage,
+                ) {
 
-                when {
-                    asrResult == null -> {
-                        temiRobot.finishConversation()
-                        temiRobot.removeAsrListener(this)
-                    }
-                    asrResult.isEmpty() -> {
-                        temiRobot.finishConversation()
-                        temiRobot.removeAsrListener(this)
-                    }
-                    else -> {
-                        temiRobot.finishConversation()
-                        createRetrofit(asrResult + ", me responda em uma frase", "xxxx")
-                        temiRobot.removeAsrListener(this)
+                    when {
+                        asrResult == null -> {
+                            temiRobot.finishConversation()
+                            println("Null: $asrResult")
+                            temiRobot.removeAsrListener(this)
+                        }
+                        asrResult.isEmpty() -> {
+                            temiRobot.finishConversation()
+                            println("Empty: $asrResult")
+                            temiRobot.removeAsrListener(this)
+                        }
+                        else -> {
+                            Log.d("ASR", asrResult)
+                            temiRobot.finishConversation()
+                            temiRobot.removeAsrListener(this)
+                        }
                     }
                 }
             }
+            temiRobot.addAsrListener(asrStatus)
+        }  catch (e: Exception) {
+            Log.e("TemiCaller", "Erro ao reconhecer")
         }
-        temiRobot.addAsrListener(asrStatus)
-
     }
 
-    fun enableWakeup() {
+    fun stopSpeak() {
+        temiRobot.cancelAllTtsRequests()
+    }
+
+    private fun enableWakeup() {
         request.requestSettings()
         temiRobot.toggleWakeup(false)
-    }
-
-    fun disableWakeup() {
-        request.requestSettings()
-        temiRobot.toggleWakeup(true)
-    }
-
-    fun wakeup() {
-        temiRobot.wakeup()
-    }
-
-    private fun createRetrofit(userInput: String, apiKey: String) {
-        val loggingInterceptor = HttpLoggingInterceptor().apply {
-            level = HttpLoggingInterceptor.Level.BODY
-        }
-
-        val client = OkHttpClient.Builder()
-            .addInterceptor(loggingInterceptor)
-            .readTimeout(500, TimeUnit.SECONDS)
-            .writeTimeout(500, TimeUnit.SECONDS)
-            .build()
-
-        val gson: Gson = GsonBuilder().create()
-
-        val retrofit = Retrofit.Builder()
-            .baseUrl("http://api.temi.jabuti.ai:8000/")
-            .client(client)
-            .addConverterFactory(GsonConverterFactory.create(gson))
-            .build()
-
-        val apiService = retrofit.create(JabutiApiService::class.java)
-
-        GlobalScope.launch(Dispatchers.IO) {
-            val response = apiService.ask(apiKey, userInput)
-
-            if (response.isSuccessful) {
-                val responseBody = response.body()
-                println("Corpo da Resposta: $responseBody")
-
-            } else {
-                Log.e("TemiCaller", "Erro na requisição: ${response.code()}")
-                Log.e("TemiCaller", "Corpo da resposta: ${response.errorBody()?.string()}")
-            }
-            temiRobot.wakeupWordDisabled
-        }
     }
 }
