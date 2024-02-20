@@ -1,0 +1,80 @@
+# Sistema de Deteção 
+detection, rastreamento, interação 
+---
+
+* Importação
+* Iniciar detecção 
+* Iniciar rastreamento
+* Interação com o usuário
+
+## Importação
+
+<Row>
+  <Col>
+    Importar o Caller.
+  </Col>
+  <Col>
+
+    ```bash {{ title: "kotlin" }}
+    import com.robotec.caller.vision.Detection 
+    ```
+  </Col>
+  <Col>
+    Colocar o Navigation em variável global.
+  </Col>
+  <Col>
+
+    ```bash {{ title: "kotlin" }}
+    private val detect = Detection()
+    ```
+  </Col>
+</Row>
+
+## Iniciar detecção 
+
+<Row>
+  <Col>
+      Chamar o método **detectionon**.
+      ### Parâmetros
+      * distance ->  **Float**.
+
+  </Col>
+  <Col>
+
+    ```bash {{ title: "kotlin" }}
+    detect.detectionOn(0.5f) {
+        // callback
+    }
+    ```
+  </Col>
+</Row>
+
+## Iniciar rastreamento 
+
+<Row>
+  <Col>
+      Chamar o método **trackeron**.
+  </Col>
+  <Col>
+
+    ```bash {{ title: "kotlin" }}
+    detect.trackerOn()
+    ```
+  </Col>
+</Row>
+
+## Interação com o usuário
+
+<Row>
+  <Col>
+      Chamar o método **interaction**.
+  </Col>
+  <Col>
+
+    ```bash {{ title: "kotlin" }}
+    detect.interaction() {
+        // callback
+    }
+    ```
+  </Col>
+</Row>
