@@ -215,6 +215,7 @@ export const navigation = [
       { title: 'Navigation', href: '/navegacao/navigation' },
       { title: 'Follow', href: '/navegacao/follow' },
       { title: 'Mapa', href: '/navegacao/mapas' },
+      { title: 'Movements', href: '/movimentos/movement' }
     ],
   },
 ]

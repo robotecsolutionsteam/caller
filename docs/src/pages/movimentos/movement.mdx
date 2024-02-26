@@ -1,0 +1,212 @@
+# Movimentação
+Move, turn, tilt, etc.
+---
+
+* Importação
+* Mover robô manualmente
+* Rotacionar robô manualmente
+* Inclinar cabeça para determinado ângulo
+* Inclinar cabeça em determinado ângulo
+* Parar movimento
+* Iniciar patrulha
+* Obter velocidade do robô
+* Obter status de elevação
+
+## Importação
+
+<Row>
+  <Col>
+    Importar o Caller.
+  </Col>
+  <Col>
+
+    ```bash {{ title: "kotlin" }}
+    import com.robotec.caller.movements.Movements 
+    ```
+  </Col>
+  <Col>
+    Colocar o Movements em variável global.
+  </Col>
+  <Col>
+
+    ```bash {{ title: "kotlin" }}
+    private val movements = Movements()
+    ```
+  </Col>
+</Row>
+
+
+
+
+## Mover robô manualmente
+
+<Row>
+  <Col>
+      Chamar o método **moveRobot**.
+      ### Parâmetros
+      * distance_x ->  **Float**
+      * distance_y ->  **Float**
+
+      ### Retornos
+      * None
+  </Col>
+  <Col>
+
+    ```bash {{ title: "kotlin" }}
+    movements.moveRobot(distance_x,distance_y) {
+      // Código de callback
+    }
+    ```
+  </Col>
+</Row>
+
+
+## Rotacionar robô manualmente
+
+<Row>
+  <Col>
+      Chamar o método **turnRobot**.
+      ### Parâmetros
+      * angulo -> **Int**
+      * velocidade ->  **Float**
+
+      ### Retornos
+      * None
+  </Col>
+  <Col>
+
+    ```bash {{ title: "kotlin" }}
+    movements.turnRobot(angulo,velocidade) {
+      // Código de callback
+    }
+    ```
+  </Col>
+</Row>
+
+## Inclinar cabeça para determinado ângulo
+
+<Row>
+  <Col>
+      Chamar o método **tiltHead**.
+      ### Parâmetros
+      * angulo -> **Int**
+      * velocidade ->  **Float**
+
+      ### Retornos
+      * None
+  </Col>
+  <Col>
+
+    ```bash {{ title: "kotlin" }}
+    movements.tiltHead(angulo,velocidade) {
+      // Código de callback
+    }
+    ```
+  </Col>
+</Row>
+
+## Inclinar cabeça em determinado ângulo
+
+<Row>
+  <Col>
+      Chamar o método **tiltHeadBy**.
+      ### Parâmetros
+      * angulo -> **Int**
+      * velocidade ->  **Float**
+
+      ### Retornos
+      * None
+  </Col>
+  <Col>
+
+    ```bash {{ title: "kotlin" }}
+    movements.tiltHeadBy(angulo,velocidade) {
+      // Código de callback
+    }
+    ```
+  </Col>
+</Row>
+
+
+## Parar movimento
+
+<Row>
+  <Col>
+      Chamar o método **stopMovement**.
+      ### Parâmetros
+      * None
+
+      ### Retornos
+      * None
+  </Col>
+  <Col>
+
+    ```bash {{ title: "kotlin" }}
+    movements.stopMovement() {
+      // Código de callback
+    }
+    ```
+  </Col>
+</Row>
+
+## Iniciar patrulha
+
+<Row>
+  <Col>
+      Chamar o método **placesPatrol**.
+      ### Parâmetros
+      * lugares -> **List&lt;String&gt;**
+      * semParar -> **Boolean**
+      * nVezes -> **Int**
+      * tempoEspera -> **Int**
+
+      ### Retornos
+      * None
+  </Col>
+  <Col>
+
+    ```bash {{ title: "kotlin" }}
+    movements.placesPatrol(lugares,semParar,nVezes,tempoEspera) {
+      // Código de callback
+    }
+    ```
+  </Col>
+</Row>
+
+## Obter velocidade do robô
+
+<Row>
+  <Col>
+      Chamar o método **getSpeed**.
+      ### Parâmetros
+      * None
+
+      ### Retornos
+      * velocidade -> **Float**
+  </Col>
+  <Col>
+
+    ```bash {{ title: "kotlin" }}
+    val speed = navigation.getSpeed()
+    ```
+  </Col>
+</Row>
+
+## Obter status de elevação
+
+<Row>
+  <Col>
+      Chamar o método **getLiftedState**.
+      ### Parâmetros
+      * None
+
+      ### Retornos
+      * status -> **Boolean**
+  </Col>
+  <Col>
+
+    ```bash {{ title: "kotlin" }}
+    val isLifted = movements.getLiftedState()
+    ```
+  </Col>
+</Row>
