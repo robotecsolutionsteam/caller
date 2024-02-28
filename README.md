@@ -40,7 +40,16 @@ adb connect <ip>
 ```bash
 make install
 ```
-
+Adicionar o maven no gradle.
+```kotlin
+dependencyResolutionManagement {
+		repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
+		repositories {
+			mavenCentral()
+			maven { url 'https://jitpack.io' }
+		}
+	}
+```
 
 ## **Baixe o repositório:**
 Instalar o SDK:
