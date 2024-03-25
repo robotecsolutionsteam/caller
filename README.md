@@ -56,8 +56,8 @@ Instalar o SDK:
 
 ```kotlin
 dependencies {
-	...
-	implementation 'com.github.robotecsolutionsteam:caller:Tag'
+	..
+	implementation 'com.github.robotecsolutionsteam:caller:1.1.5'
 }
 ```
 
