@@ -6,6 +6,7 @@ import com.robotemi.sdk.Robot
 import com.robotemi.sdk.TtsRequest
 import com.robotemi.sdk.listeners.OnGoToLocationStatusChangedListener
 import com.robotemi.sdk.navigation.listener.OnCurrentPositionChangedListener
+import com.robotemi.sdk.navigation.listener.OnDistanceToDestinationChangedListener
 import com.robotemi.sdk.navigation.listener.OnDistanceToLocationChangedListener
 import com.robotemi.sdk.navigation.listener.OnReposeStatusChangedListener
 
@@ -33,6 +34,18 @@ class Navigation {
                     descriptionId: Int,
                     description: String,
                 ) {
+                    val distanceStatus = object : OnDistanceToDestinationChangedListener {
+                        override fun onDistanceToDestinationChanged(
+                            location: String,
+                            distance: Float,
+                        ) {
+                            Log.w("Navigation description", "Distance: $distance")
+                            temiRobot.removeOnDistanceToDestinationChangedListener(this)
+
+                        }
+                    }
+                    temiRobot.addOnDistanceToDestinationChangedListener(distanceStatus)
+
                     Log.w("Navigation", "Descrição: $description")
                     if (description == "Obstáculo de Altura" || description == "Obstáculo Lidar") {
                         temiRobot.speak(TtsRequest.create("Com licença, por favor", false))
