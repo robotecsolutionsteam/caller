@@ -33,6 +33,7 @@ class SampleActivity : ComponentActivity(){
             "followRestricted",
             "simpleSpeak",
             "finishSpeak",
+            "finishWithoutSpeak",
             "block",
             "wakeUp",
             "stopSpeak",
@@ -76,23 +77,30 @@ class SampleActivity : ComponentActivity(){
             }
 
             if (position == 4) {
+                Log.i("Robot", "Iniciando [finishWithoutSpeak] ...")
+                speak.finishWithoutSpeak(true, this) {
+                    Log.v("Robot",  Status.currentSpeakStatus)
+                }
+            }
+
+            if (position == 5) {
                 Log.i("Robot", "Iniciando [block] ...")
                 config.block(this, true)
             }
 
-            if (position == 5) {
+            if (position == 6) {
                 Log.i("Robot", "Iniciando [wakeUp] ...")
                 speak.wakeUp(true, this) {
                     Log.v("Robot",  Status.currentAsrStatus)
                 }
             }
 
-            if (position == 6)  {
+            if (position == 7)  {
                 Log.i("Robot", "Iniciando [stopSpeak] ...")
                 speak.stopSpeak(true, this)
             }
 
-            if (position == 7)  {
+            if (position == 8)  {
                 Log.i("Robot", "Iniciando [stopSpeak] ...")
                 navigation.goTo("1", true, this) {
                     Log.v("Robot",  Status.currentNavigationStatus)
@@ -100,7 +108,7 @@ class SampleActivity : ComponentActivity(){
                 }
             }
 
-            if (position == 8)  {
+            if (position == 9)  {
                 Log.i("Robot", "Iniciando [stopSpeak] ...")
                 navigation.returnBase(true, this) {
                     Log.v("Robot",  Status.currentNavigationStatus)

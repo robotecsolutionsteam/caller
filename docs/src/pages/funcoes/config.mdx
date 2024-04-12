@@ -1,0 +1,67 @@
+# Configuração
+Bloqueiar, desbloqueiar funções e botões
+---
+
+### Bloqueiar funções e botões 
+Bloqueiar funções e botões do Temi. Como Follow Me, Navegação, etc.
+
+## Importação
+
+<Row>
+  <Col>
+    Importar o Config. No inicio do arquivo.
+  </Col>
+  <Col>
+    ```bash {{ title: "kotlin" }}
+    import com.robotec.caller.utils.Config
+    ```
+  </Col>
+  <Col>
+    Colocar o **Config** em variável global.
+  </Col>
+  <Col>
+
+    ```bash {{ title: "kotlin" }}
+    private val config = Config()
+    ```
+  </Col>
+  <Col>
+    Adicionar permissões no AndroidManifest.xml
+  </Col>
+  <Col>
+
+    ```bash {{ title: "kotlin" }}
+        <meta-data
+            android:name="com.robotemi.sdk.metadata.KIOSK"
+            android:value="TRUE" />
+
+        <meta-data
+            android:name="com.robotemi.sdk.metadata.SKILL"
+            android:value="temi" />
+
+        <meta-data
+            android:name="@string/metadata_permissions"
+            android:value="com.robotemi.permission.settings />
+    ```
+  </Col>
+</Row>
+
+## Bloqueiar
+
+<Row>
+  <Col>
+    Ativar o **block**.
+    #### Parâmetros
+    * useTemi: **Boolean**.
+    * context: **Context**.
+
+    #### Retornos
+    * **None**
+  </Col>
+  <Col>
+    ```bash {{ title: "kotlin" }}
+    config.block(useTemi=true, context)
+    ```
+  </Col>
+</Row>
+

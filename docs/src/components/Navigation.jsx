@@ -194,6 +194,7 @@ export const navigation = [
     links: [
       { title: 'Bluetooth', href: '/funcoes/bluetooth' },
       { title: 'Câmera', href: '/funcoes/camera' },
+      { title: 'Configuração', href: '/funcoes/config' },
     ],
   },
   {
