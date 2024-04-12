@@ -1,21 +1,24 @@
-# Follow Me
-Seguir pessoas 
+# Follow Me - Seguir Pessoas
 ---
 
-* Importação
-* Follow Normal
-* Follow Restrito
+### Importação
+Como utilizar as funções de Follow Me.
+
+### Follow me
+Ativar o Follow Me, normal sem nenhuma restrição. Poser ser utilizado offline.
+
+### Follow Restrito
+Ativar o Follow Me, com restrição de movimento, onde o Temi não consegue do lugar, somente seguir com a cabeça.
 
 ## Importação
 
 <Row>
   <Col>
-    Importar o Caller.
+    Importar o FollowMe. No inicio do arquivo.
   </Col>
   <Col>
-
     ```bash {{ title: "kotlin" }}
-    import com.robotec.caller.follow.FollowMe 
+    import com.robotec.caller.follow.FollowMe
     ```
   </Col>
   <Col>
@@ -29,16 +32,20 @@ Seguir pessoas
   </Col>
 </Row>
 
-## Follow Normal
+## Follow Me
 
 <Row>
   <Col>
-    Iniciar follow me normal.
+    Iniciar follow me.
+    #### Parâmetros
+    * useTemi: **Boolean**.
+
+    #### Retornos
+    * **None**
   </Col>
   <Col>
-
     ```bash {{ title: "kotlin" }}
-    followMe.follow() {
+    followMe.follow(useTemi=true) {
       // Código de callback
     }
     ```
@@ -50,11 +57,16 @@ Seguir pessoas
 <Row>
   <Col>
     Iniciar follow me restrito.
+    #### Parâmetros
+    * useTemi: **Boolean**.
+
+    #### Retornos
+    * **None**
   </Col>
   <Col>
 
     ```bash {{ title: "kotlin" }}
-    followMe.followRestricted() {
+    followMe.followRestricted(useTemi=true) {
         // Código de callback
     }
     ```

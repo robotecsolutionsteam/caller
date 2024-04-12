@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <style name="GridViewScrollBarStyle">
-        <item name="android:scrollbars">vertical</item> <!-- Define a orientação do scroll bar para vertical -->
-        <item name="android:scrollbarThumbVertical">@drawable/scroll</item> <!-- Define o desenho do thumb do scroll bar -->
+        <item name="android:scrollbars">vertical</item>
+        <item name="android:scrollbarThumbVertical">@drawable/scroll</item>
     </style>
 </resources>

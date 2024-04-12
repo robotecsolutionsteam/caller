@@ -1,6 +1,8 @@
 package com.robotec.caller.listener
 
 object Status {
+    var currentFollowRestrictedStatus: String = ""
+    var currentFollowStatus: String = ""
     var currentNavigationStatus: String = ""
     var currentMovementStatus: String = ""
     var currentSpeakStatus: String = ""
