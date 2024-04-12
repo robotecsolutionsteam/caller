@@ -1,11 +1,19 @@
-# Sistema de Fala 
-Falar, parar, reconhecimento de fala.
+# Sistema de Fala do Robô
+Falar, parar, reconhecimento de fala, etc.
 ---
 
-* Importação
-* Falar
-* Reconhecimento de fala
-* Parar fala
+### Importação
+Como utilizar as funções de Voice.
+### Iniciar Fala
+Inicia  a fala e retorna o callback quando a fala inicia.
+### Acabar Fala
+Inicializa o reconhecimento de fala e retorna o callback quando a fala acaba.
+### Reconhecimento de fala
+Iniciar o **WakeUP** para reconhecer a fala.
+### Parar fala
+Parar a fala.
+### Acabar Fala sem Texto
+Inicia a fala sem texto e retorna o callback quando a fala acaba.
 
 ## Importação
 
@@ -20,7 +28,7 @@ Falar, parar, reconhecimento de fala.
     ```
   </Col>
   <Col>
-    Colocar o Navigation em variável global.
+    Colocar o **Voice** em variável global.
   </Col>
   <Col>
 
@@ -30,19 +38,46 @@ Falar, parar, reconhecimento de fala.
   </Col>
 </Row>
 
-## Falar
+## Falar quando iniciar
 
 <Row>
   <Col>
-      Chamar o método **Speak**.
-      ### Parâmetros
-      * text ->  **String**.
+      Chamar o método **startSpeak**.
+      #### Parâmetros
+      * text: **String**.
+      * useTemi: **Boolean**.
+      * context: **Context**.
 
+      #### Retornos
+      * **None**
   </Col>
   <Col>
 
     ```bash {{ title: "kotlin" }}
-    voice.speak(text) {
+    voice.startSpeak(text, useTemi=true, context) {
+        // callback
+    }
+    ```
+  </Col>
+</Row>
+
+## Falar quando terminar
+
+<Row>
+  <Col>
+      Chamar o método **finishSpeak**.
+      #### Parâmetros
+      * text: **String**.
+      * useTemi: **Boolean**.
+      * context: **Context**.
+
+      #### Retornos
+      * **None**
+  </Col>
+  <Col>
+
+    ```bash {{ title: "kotlin" }}
+    voice.finishSpeak(text, useTemi=true, context) {
         // callback
     }
     ```
@@ -54,12 +89,18 @@ Falar, parar, reconhecimento de fala.
 <Row>
   <Col>
       Chamar o método **wakeup**.
+      #### Parâmetros
+      * context: **Context**.
+      * useTemi: **Boolean**.
+
+      #### Retornos
+      * **None**
 
   </Col>
   <Col>
 
     ```bash {{ title: "kotlin" }}
-    voice.wakeUp() {
+    voice.wakeUp(context, useTemi=true) {
         // callback
     }
     ```
@@ -67,17 +108,46 @@ Falar, parar, reconhecimento de fala.
 </Row>
 
 
-## parar de falar
+## Parar de falar
 
 <Row>
   <Col>
       Chamar o método **stopSpeak**.
+      #### Parâmetros
+      * context: **Context**.
+      * useTemi: **Boolean**.
+
+      #### Retornos
+      * **None**
 
   </Col>
   <Col>
 
     ```bash {{ title: "kotlin" }}
-    voice.stopSpeak()
+    voice.stopSpeak(context, useTemi=true) {
+        // callback
+    }
+    ```
+  </Col>
+</Row>
+
+## Acabar Fala sem Texto
+
+<Row>
+  <Col>
+      Chamar o método **stopSpeak**.
+      #### Parâmetros
+      * useTemi: **Boolean**.
+      * context: **Context**.     
+
+      #### Retornos
+      * **None**
+  </Col>
+  <Col>
+    ```bash {{ title: "kotlin" }}
+    voice.finishWithoutSpeak(useTemi=true, context) {
+        // callback
+    }
     ```
   </Col>
 </Row>

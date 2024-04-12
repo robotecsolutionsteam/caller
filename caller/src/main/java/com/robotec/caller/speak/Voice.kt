@@ -80,6 +80,38 @@ class Voice {
         }
     }
 
+    fun finishWithoutSpeak(useTemi: Boolean, context: Context, onComplete: () -> Unit) {
+        try {
+            if (useTemi) {
+
+                val speakStatus = object : Robot.TtsListener {
+                    override fun onTtsStatusChanged(
+                        TtsRequest: TtsRequest,
+                    ) {
+                        Status.currentSpeakStatus = TtsRequest.status.toString()
+
+                        if (TtsRequest.status.toString() == "COMPLETED") {
+                            temiRobot.removeTtsListener(this)
+                            onComplete.invoke()
+                        }
+                        if (TtsRequest.status.toString() == "ABORT") {
+                            Log.e("TemiCaller", "Erro ao usar speak")
+                            temiRobot.removeTtsListener(this)
+                            onComplete.invoke()
+                        }
+                    }
+                }
+                temiRobot.addTtsListener(speakStatus)
+
+            } else {
+                Toast.makeText(context, "Sem uso do Temi", Toast.LENGTH_SHORT).show()
+                onComplete.invoke()
+            }
+        } catch (e: Exception) {
+            Log.e("TemiCaller", "Erro ao usar speak")
+        }
+    }
+
     fun wakeUp(useTemi: Boolean, context: Context, onComplete: () -> Unit) {
         try {
             if (useTemi) {
