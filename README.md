@@ -38,7 +38,7 @@ adb connect <ip>
 ```bash
 make install
 ```
-Adicionar o maven no gradle.
+Adicionar o `jitpack` no gradle.
 ```gradle
 dependencyResolutionManagement {
 		repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
