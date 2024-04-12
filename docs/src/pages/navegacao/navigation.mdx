@@ -5,20 +5,32 @@ Goto, save local, etc.
 ### Importação
 Como utilizar as funções de Navigation.
 
-
 ### Salvar Local
+Salvar um local para navegação.
 
 ### Deletar Local
+Deletar um local salvo.
 
 ### Obter Locais Salvos
+Obter todos os locais salvos.
 
 ### GoTo Simples
+Ir para um local salvo.
+
+### Retornar para a base
+Retornar para a base.
+
+### Obter a distancia
+Obter a distância do alvo até o Temi.
 
 ### GoTo Completo
+Ir para um local salvo com opções.
 
 ### GoTo Posição
+Ir para uma posição específica.
 
 ### Reposicionar
+Reposicionar o Temi.
 
 ## Importação
 
@@ -106,9 +118,11 @@ Como utilizar as funções de Navigation.
 
 <Row>
   <Col>
-      Chamar o método **goto**.
+      Chamar o método **goTo**.
       ### Parâmetros
-      * local -> String
+      * local -> **String**
+      * useTemi -> **Boolean**
+      * context -> **Context**
 
       ### Retornos
       * None
@@ -116,7 +130,51 @@ Como utilizar as funções de Navigation.
   <Col>
 
     ```bash {{ title: "kotlin" }}
-    navigation.goTo(local) {
+    navigation.goTo(local, useTemi, context) {
+      // Código de callback
+    }
+    ```
+  </Col>
+</Row>
+
+## Retornar para a base
+
+<Row>
+  <Col>
+      Chamar o método **returnBase**.
+      ### Parâmetros
+      * useTemi -> **Boolean**
+      * context -> **Context**
+
+      ### Retornos
+      * None
+  </Col>
+  <Col>
+
+    ```bash {{ title: "kotlin" }}
+    navigation.returnBase(useTemi, context) {
+      // Código de callback
+    }
+    ```
+  </Col>
+</Row>
+
+## Obter a distancia
+
+<Row>
+  <Col>
+      Chamar o método **goToDistance**.
+      ### Parâmetros
+      * useTemi -> **Boolean**
+      * context -> **Context**
+
+      ### Retornos
+      * None
+  </Col>
+  <Col>
+
+    ```bash {{ title: "kotlin" }}
+    navigation.goToDistance(useTemi, context) {
       // Código de callback
     }
     ```
@@ -129,9 +187,9 @@ Como utilizar as funções de Navigation.
   <Col>
       Chamar o método **gotocomplex**.
       ### Parâmetros
-      * local -> String
-      * Ré -> Boolean
-      * Sem Desvio -> Boolean
+      * local -> **String**
+      * Ré -> **Boolean**
+      * Sem Desvio -> **Boolean**
 
       ### Retornos
       * None
@@ -150,11 +208,11 @@ Como utilizar as funções de Navigation.
 
 <Row>
   <Col>
-      Chamar o método **gotoposition**.
+      Chamar o método **gotoPosition**.
       ### Parâmetros
-      * x -> Float
-      * y -> Float
-      * angle -> Float
+      * x -> **Float**
+      * y -> **Float**
+      * angle -> **Float**
 
       ### Retornos
       * None
@@ -187,6 +245,21 @@ Como utilizar as funções de Navigation.
     navigation.reposicionar() {
       // Código de callback
     }
+    ```
+  </Col>
+</Row>
+
+## Listener
+
+<Row>
+  <Col>
+    Listener para receber o status do navigation.
+  </Col>
+  <Col>
+
+    ```bash {{ title: "kotlin" }}
+    Status.currentDistanceStatus // Float
+    Status.currentNavigationStatus
     ```
   </Col>
 </Row>
