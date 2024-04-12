@@ -5,8 +5,6 @@
 
 </p>
 
-<div align="center">
-
 # **Temi Caller**
 
 SDK Temi e funções genericas em Kotlin.
@@ -40,12 +38,12 @@ adb connect <ip>
 make install
 ```
 Adicionar o maven no gradle.
-```kotlin
+```gradle
 dependencyResolutionManagement {
 		repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
 		repositories {
 			mavenCentral()
-			maven { url 'https://jitpack.io' }
+			maven { url 'https://jitpack.io' } // adicionar aqui !!
 		}
 	}
 ```
@@ -53,10 +51,10 @@ dependencyResolutionManagement {
 ## **Baixe o repositório:**
 Instalar o SDK:
 
-```kotlin
+```gradle
 dependencies {
-	..
-	implementation 'com.github.robotecsolutionsteam:caller:1.1.5'
+	...
+	implementation 'com.github.robotecsolutionsteam:caller:latest'
 }
 ```
 
