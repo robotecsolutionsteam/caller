@@ -10,6 +10,9 @@ Ativar o Follow Me, normal sem nenhuma restrição. Poser ser utilizado offline.
 ### Follow Restrito
 Ativar o Follow Me, com restrição de movimento, onde o Temi não consegue do lugar, somente seguir com a cabeça.
 
+### Listener Follow Me
+Utilize o listener **currentFollowStatus** para receber o status do follow me.
+
 ## Importação
 
 <Row>
@@ -69,6 +72,20 @@ Ativar o Follow Me, com restrição de movimento, onde o Temi não consegue do l
     followMe.followRestricted(useTemi=true) {
         // Código de callback
     }
+    ```
+  </Col>
+</Row>
+
+## Listener **currentFollowStatus**
+
+<Row>
+  <Col>
+    Receber o status do follow me.
+  </Col>
+  <Col>
+
+    ```bash {{ title: "kotlin" }}
+    status.currentFollowStatus
     ```
   </Col>
 </Row>
