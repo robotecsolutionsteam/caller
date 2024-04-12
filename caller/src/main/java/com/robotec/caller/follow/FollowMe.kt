@@ -1,8 +1,8 @@
 package com.robotec.caller.follow
 
 import android.util.Log
-import com.robotec.caller.listener.Status
 import com.robotemi.sdk.Robot
+import com.robotec.caller.listener.Status
 import com.robotemi.sdk.listeners.OnBeWithMeStatusChangedListener
 import com.robotemi.sdk.listeners.OnConstraintBeWithStatusChangedListener
 

@@ -1,46 +1,86 @@
 package com.robotec.caller.speak
 
 import android.util.Log
-import com.robotec.caller.utils.Request
 import com.robotemi.sdk.Robot
 import com.robotemi.sdk.TtsRequest
-
 import com.robotemi.sdk.SttLanguage
+import com.robotec.caller.utils.Request
+import com.robotec.caller.listener.Status
 
 class Voice {
 
     private var temiRobot: Robot = Robot.getInstance()
     private val request = Request()
 
-    fun speak(text: String, onComplete: () -> Unit) {
+    fun startSpeak(text: String, useTemi: Boolean, onComplete: () -> Unit) {
         try {
-            temiRobot.speak(TtsRequest.create(text, false))
+            if (useTemi) {
+                temiRobot.speak(TtsRequest.create(text, false))
 
-            val speakStatus = object : Robot.TtsListener {
-                override fun onTtsStatusChanged(
-                    TtsRequest: TtsRequest,
-                ) {
-                    if (TtsRequest.status.toString() == "COMPLETED") {
-                        com.robotec.caller.listener.Status.currentSpeakStatus = TtsRequest.status.toString()
-                        temiRobot.removeTtsListener(this)
-                        onComplete.invoke()
-                    }
-                    if (TtsRequest.status.toString() == "ABORT") {
-                        com.robotec.caller.listener.Status.currentSpeakStatus = TtsRequest.status.toString()
-                        Log.e("Speak", "Falha ao falar")
-                        temiRobot.removeTtsListener(this)
-                        onComplete.invoke()
+                val speakStatus = object : Robot.TtsListener {
+                    override fun onTtsStatusChanged(
+                        TtsRequest: TtsRequest,
+                    ) {
+                        Status.currentSpeakStatus = TtsRequest.status.toString()
+
+                        if (TtsRequest.status.toString() == "STARTED") {
+                            temiRobot.removeTtsListener(this)
+                            onComplete.invoke()
+                        }
+                        if (TtsRequest.status.toString() == "ABORT") {
+                            Log.e("TemiCaller", "Erro ao usar speak")
+                            temiRobot.removeTtsListener(this)
+                            onComplete.invoke()
+                        }
                     }
                 }
-            }
-            temiRobot.addTtsListener(speakStatus)
+                temiRobot.addTtsListener(speakStatus)
 
+            } else {
+                Log.v("TemiCaller", "Sem usar o speak")
+                onComplete.invoke()
+            }
         } catch (e: Exception) {
-            Log.e("TemiCaller", "Erro ao navegar")
+            Log.e("TemiCaller", "Erro ao usar speak")
+        }
+    }
+
+    fun finishSpeak(text: String, useTemi: Boolean, onComplete: () -> Unit) {
+        try {
+            if (useTemi) {
+                temiRobot.speak(TtsRequest.create(text, false))
+
+                val speakStatus = object : Robot.TtsListener {
+                    override fun onTtsStatusChanged(
+                        TtsRequest: TtsRequest,
+                    ) {
+                        Status.currentSpeakStatus = TtsRequest.status.toString()
+
+                        if (TtsRequest.status.toString() == "COMPLETED") {
+                            temiRobot.removeTtsListener(this)
+                            onComplete.invoke()
+                        }
+                        if (TtsRequest.status.toString() == "ABORT") {
+                            Log.e("TemiCaller", "Erro ao usar speak")
+                            temiRobot.removeTtsListener(this)
+                            onComplete.invoke()
+                        }
+                    }
+                }
+                temiRobot.addTtsListener(speakStatus)
+
+            } else {
+                Log.v("TemiCaller", "Sem usar o speak")
+                onComplete.invoke()
+            }
+        } catch (e: Exception) {
+            Log.e("TemiCaller", "Erro ao usar speak")
         }
     }
 
     fun wakeUp(onComplete: () -> Unit) {
+
+        mutarAlexa()
 
         request.requestToBeKioskApp()
 
@@ -57,16 +97,14 @@ class Voice {
                     when {
                         asrResult == null -> {
                             temiRobot.finishConversation()
-                            println("Null: $asrResult")
                             temiRobot.removeAsrListener(this)
                         }
                         asrResult.isEmpty() -> {
                             temiRobot.finishConversation()
-                            println("Empty: $asrResult")
                             temiRobot.removeAsrListener(this)
                         }
                         else -> {
-                            Log.d("ASR", asrResult)
+                            Status.currentAsrStatus = asrResult
                             temiRobot.finishConversation()
                             temiRobot.removeAsrListener(this)
                         }
@@ -86,5 +124,9 @@ class Voice {
     private fun enableWakeup() {
         request.requestSettings()
         temiRobot.toggleWakeup(false)
+    }
+
+    private fun mutarAlexa() {
+        temiRobot.muteAlexa()
     }
 }

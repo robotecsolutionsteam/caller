@@ -1,23 +1,24 @@
 package com.robotec.caller
 
-import android.os.Bundle
 import android.util.Log
+import android.os.Bundle
 import android.widget.AdapterView
 import androidx.activity.ComponentActivity
 import com.robotec.caller.databinding.ActivityMainBinding
 
-// Importar o package Follow
+import com.robotec.caller.speak.Voice
 import com.robotec.caller.follow.FollowMe
+import com.robotec.caller.utils.Config
 
 import com.robotec.caller.listener.Status
-
 
 class MainActivity : ComponentActivity(){
 
     private lateinit var binding: ActivityMainBinding
 
-    // Inicializar o Follow
     private val followMe = FollowMe()
+    private val config = Config()
+    private val speak = Voice()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -26,7 +27,12 @@ class MainActivity : ComponentActivity(){
 
         val features = arrayOf(
             "follow",
-            "followRestricted"
+            "followRestricted",
+            "simpleSpeak",
+            "finishSpeak",
+            "block",
+            "wakeUp",
+            "stopSpeak"
         )
 
         val gridAdapter = GridAdapter(this@MainActivity, features)
@@ -43,10 +49,41 @@ class MainActivity : ComponentActivity(){
             }
 
             if (position == 1) {
-                Log.i("Robot", "[followRestricted]")
+                Log.i("Robot", "Iniciando [followRestricted] ...")
                 followMe.followRestricted(true) {
-                    Log.v("Robot", "[followRestricted] finalizado!")
+                    Log.v("Robot",  Status.currentFollowRestrictedStatus)
                 }
+            }
+
+            if (position == 2) {
+                Log.i("Robot", "Iniciando [simpleSpeak] ...")
+                speak.startSpeak("Teste de voz.", true) {
+                    Log.v("Robot",  Status.currentSpeakStatus)
+                }
+            }
+
+            if (position == 3) {
+                Log.i("Robot", "Iniciando [finishSpeak] ...")
+                speak.finishSpeak("Teste de voz.", true) {
+                    Log.v("Robot",  Status.currentSpeakStatus)
+                }
+            }
+
+            if (position == 4) {
+                Log.i("Robot", "Iniciando [block] ...")
+                config.block(this)
+            }
+
+            if (position == 5) {
+                Log.i("Robot", "Iniciando [wakeUp] ...")
+                speak.wakeUp() {
+                    Log.v("Robot",  Status.currentAsrStatus)
+                }
+            }
+
+            if (position == 6)  {
+                Log.i("Robot", "Iniciando [stopSpeak] ...")
+                speak.stopSpeak()
             }
         }
     }
