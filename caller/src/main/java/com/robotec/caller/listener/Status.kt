@@ -6,6 +6,7 @@ object Status {
     var currentNavigationStatus: String = ""
     var currentMovementStatus: String = ""
     var currentSpeakStatus: String = ""
+    var currentDistanceStatus: Float = 0.toFloat()
     var currentAsrStatus: String = ""
     var currentDetectionStatus: Int = 0
     var currentRobotSpeed: Float = 0f

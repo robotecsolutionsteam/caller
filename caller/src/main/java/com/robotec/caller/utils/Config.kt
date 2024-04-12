@@ -24,13 +24,21 @@ class Config {
         alexa()
     }
 
-    fun block(context: Context){
-        if (!estaTravado) {
-            travar(context)
-            estaTravado = true
-        } else {
-            destravar(context)
-            estaTravado = false
+    fun block(context: Context, useTemi: Boolean){
+        try {
+            if (useTemi) {
+                if (!estaTravado) {
+                    travar(context)
+                    estaTravado = true
+                } else {
+                    destravar(context)
+                    estaTravado = false
+                }
+            } else {
+                Log.v("TemiCaller", "Sem usar o temi ao bloqueiar")
+            }
+        } catch (e: Exception) {
+            Log.e("TemiCaller", "Erro ao bloqueiar")
         }
     }
 

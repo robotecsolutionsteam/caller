@@ -4,25 +4,28 @@ import android.util.Log
 import android.os.Bundle
 import android.widget.AdapterView
 import androidx.activity.ComponentActivity
-import com.robotec.caller.databinding.ActivityMainBinding
+import com.robotec.caller.databinding.ActivitySampleBinding
 
 import com.robotec.caller.speak.Voice
 import com.robotec.caller.follow.FollowMe
 import com.robotec.caller.utils.Config
 
 import com.robotec.caller.listener.Status
+import com.robotec.caller.navigation.Navigation
 
-class MainActivity : ComponentActivity(){
+class SampleActivity : ComponentActivity(){
 
-    private lateinit var binding: ActivityMainBinding
+    private lateinit var binding: ActivitySampleBinding
 
+    private val navigation = Navigation()
     private val followMe = FollowMe()
     private val config = Config()
     private val speak = Voice()
 
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = ActivityMainBinding.inflate(layoutInflater)
+        binding = ActivitySampleBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
         val features = arrayOf(
@@ -32,10 +35,13 @@ class MainActivity : ComponentActivity(){
             "finishSpeak",
             "block",
             "wakeUp",
-            "stopSpeak"
+            "stopSpeak",
+            "goTo",
+            "returnBase",
+            "goToDistance"
         )
 
-        val gridAdapter = GridAdapter(this@MainActivity, features)
+        val gridAdapter = GridAdapter(this@SampleActivity, features)
         binding.gridView.setAdapter(gridAdapter)
 
         binding.gridView.onItemClickListener = AdapterView.OnItemClickListener { parent, view, position, id ->
@@ -57,33 +63,55 @@ class MainActivity : ComponentActivity(){
 
             if (position == 2) {
                 Log.i("Robot", "Iniciando [simpleSpeak] ...")
-                speak.startSpeak("Teste de voz.", true) {
+                speak.startSpeak("Teste de voz.", true, this) {
                     Log.v("Robot",  Status.currentSpeakStatus)
                 }
             }
 
             if (position == 3) {
                 Log.i("Robot", "Iniciando [finishSpeak] ...")
-                speak.finishSpeak("Teste de voz.", true) {
+                speak.finishSpeak("Teste de voz.", false, this) {
                     Log.v("Robot",  Status.currentSpeakStatus)
                 }
             }
 
             if (position == 4) {
                 Log.i("Robot", "Iniciando [block] ...")
-                config.block(this)
+                config.block(this, true)
             }
 
             if (position == 5) {
                 Log.i("Robot", "Iniciando [wakeUp] ...")
-                speak.wakeUp() {
+                speak.wakeUp(true, this) {
                     Log.v("Robot",  Status.currentAsrStatus)
                 }
             }
 
             if (position == 6)  {
                 Log.i("Robot", "Iniciando [stopSpeak] ...")
-                speak.stopSpeak()
+                speak.stopSpeak(true, this)
+            }
+
+            if (position == 7)  {
+                Log.i("Robot", "Iniciando [stopSpeak] ...")
+                navigation.goTo("1", true, this) {
+                    Log.v("Robot",  Status.currentNavigationStatus)
+
+                }
+            }
+
+            if (position == 8)  {
+                Log.i("Robot", "Iniciando [stopSpeak] ...")
+                navigation.returnBase(true, this) {
+                    Log.v("Robot",  Status.currentNavigationStatus)
+                }
+            }
+
+            if (position == 10) {
+                Log.i("Robot", "Iniciando [goToDistance] ...")
+                navigation.goToDistance(true, this) {
+                    Log.v("Robot",  Status.currentDistanceStatus.toString())
+                }
             }
         }
     }

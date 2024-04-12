@@ -1,6 +1,8 @@
 package com.robotec.caller.speak
 
+import android.content.Context
 import android.util.Log
+import android.widget.Toast
 import com.robotemi.sdk.Robot
 import com.robotemi.sdk.TtsRequest
 import com.robotemi.sdk.SttLanguage
@@ -12,7 +14,7 @@ class Voice {
     private var temiRobot: Robot = Robot.getInstance()
     private val request = Request()
 
-    fun startSpeak(text: String, useTemi: Boolean, onComplete: () -> Unit) {
+    fun startSpeak(text: String, useTemi: Boolean, context: Context, onComplete: () -> Unit) {
         try {
             if (useTemi) {
                 temiRobot.speak(TtsRequest.create(text, false))
@@ -37,7 +39,7 @@ class Voice {
                 temiRobot.addTtsListener(speakStatus)
 
             } else {
-                Log.v("TemiCaller", "Sem usar o speak")
+                Toast.makeText(context, "Sem uso do Temi", Toast.LENGTH_SHORT).show()
                 onComplete.invoke()
             }
         } catch (e: Exception) {
@@ -45,7 +47,7 @@ class Voice {
         }
     }
 
-    fun finishSpeak(text: String, useTemi: Boolean, onComplete: () -> Unit) {
+    fun finishSpeak(text: String, useTemi: Boolean, context: Context, onComplete: () -> Unit) {
         try {
             if (useTemi) {
                 temiRobot.speak(TtsRequest.create(text, false))
@@ -70,7 +72,7 @@ class Voice {
                 temiRobot.addTtsListener(speakStatus)
 
             } else {
-                Log.v("TemiCaller", "Sem usar o speak")
+                Toast.makeText(context, "Sem uso do Temi", Toast.LENGTH_SHORT).show()
                 onComplete.invoke()
             }
         } catch (e: Exception) {
@@ -78,47 +80,61 @@ class Voice {
         }
     }
 
-    fun wakeUp(onComplete: () -> Unit) {
-
-        mutarAlexa()
-
-        request.requestToBeKioskApp()
-
-        enableWakeup()
-        temiRobot.wakeup()
-
+    fun wakeUp(useTemi: Boolean, context: Context, onComplete: () -> Unit) {
         try {
-            val asrStatus = object : Robot.AsrListener {
-                override fun onAsrResult(
-                    asrResult: String,
-                    sttLanguage: SttLanguage,
-                ) {
+            if (useTemi) {
+                mutarAlexa()
 
-                    when {
-                        asrResult == null -> {
-                            temiRobot.finishConversation()
-                            temiRobot.removeAsrListener(this)
-                        }
-                        asrResult.isEmpty() -> {
-                            temiRobot.finishConversation()
-                            temiRobot.removeAsrListener(this)
-                        }
-                        else -> {
-                            Status.currentAsrStatus = asrResult
-                            temiRobot.finishConversation()
-                            temiRobot.removeAsrListener(this)
+                request.requestToBeKioskApp()
+
+                enableWakeup()
+                temiRobot.wakeup()
+
+
+                val asrStatus = object : Robot.AsrListener {
+                    override fun onAsrResult(
+                        asrResult: String,
+                        sttLanguage: SttLanguage,
+                    ) {
+
+                        when {
+                            asrResult == null -> {
+                                temiRobot.finishConversation()
+                                temiRobot.removeAsrListener(this)
+                            }
+                            asrResult.isEmpty() -> {
+                                temiRobot.finishConversation()
+                                temiRobot.removeAsrListener(this)
+                            }
+                            else -> {
+                                Status.currentAsrStatus = asrResult
+                                temiRobot.finishConversation()
+                                temiRobot.removeAsrListener(this)
+                            }
                         }
                     }
                 }
+                temiRobot.addAsrListener(asrStatus)
+            } else {
+                Toast.makeText(context, "Sem uso do Temi", Toast.LENGTH_SHORT).show()
             }
-            temiRobot.addAsrListener(asrStatus)
+
         }  catch (e: Exception) {
             Log.e("TemiCaller", "Erro ao reconhecer")
         }
     }
 
-    fun stopSpeak() {
-        temiRobot.cancelAllTtsRequests()
+    fun stopSpeak(useTemi: Boolean, context: Context,) {
+        try {
+            if (useTemi) {
+                temiRobot.cancelAllTtsRequests()
+            } else {
+                Toast.makeText(context, "Sem uso do Temi", Toast.LENGTH_SHORT).show()
+            }
+        } catch (e: Exception) {
+            Log.e("TemiCaller", "Erro ao cancelar a voz")
+        }
+
     }
 
     private fun enableWakeup() {
