@@ -5,17 +5,7 @@ import com.robotec.caller.utils.Request
 import com.robotemi.sdk.Robot
 import com.robotemi.sdk.TtsRequest
 
-import com.google.gson.Gson
-import com.google.gson.GsonBuilder
 import com.robotemi.sdk.SttLanguage
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
-import okhttp3.OkHttpClient
-import okhttp3.logging.HttpLoggingInterceptor
-import retrofit2.Retrofit
-import retrofit2.converter.gson.GsonConverterFactory
-import java.util.concurrent.TimeUnit
 
 class Voice {
 

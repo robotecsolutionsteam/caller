@@ -1,28 +1,29 @@
 package com.robotec.caller
 
 import android.os.Bundle
+import android.util.Log
+import android.widget.AdapterView
 import androidx.activity.ComponentActivity
 import com.robotec.caller.databinding.ActivityMainBinding
-
-import com.robotec.caller.bluetooth.Bluetooth
 
 class MainActivity : ComponentActivity(){
 
     private lateinit var binding: ActivityMainBinding
-    private val bluetoothInstance = Bluetooth()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        bluetoothInstance.setContext(this, "FC:B4:67:50:FD:A6")
+        val cardName = arrayOf("goTo", "goTo", "goTo", "goTo", "goTo", "goTo", "goTo", "goTo", "goTo", "goTo")
 
-        // iniciar o serviço do bluetooth
-        bluetoothInstance.startBluetoothService()
+        val gridAdapter = GridAdapter(this@MainActivity, cardName)
+        binding.gridView.setAdapter(gridAdapter)
 
-        // mandar mensagem com o bluetooth
-        bluetoothInstance.send("oii")
-
+        binding.gridView.onItemClickListener = AdapterView.OnItemClickListener { parent, view, position, id ->
+            if (position == 1) {
+                Log.d("Main", "goTo")
+            }
+        }
     }
 }
