@@ -11,4 +11,5 @@ object Status {
     var currentDetectionStatus: Int = 0
     var currentRobotSpeed: Float = 0f
     var currentLiftedStatus: Boolean = false
+    var currentLoadFloorStatus: Int = 0
 }
