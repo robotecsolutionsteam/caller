@@ -24,8 +24,8 @@ class MultiFloor {
         return temiRobot.getAllFloors()
     }
 
-    fun loadFloor(id: Int,position:Position,onComplete: () -> Unit) {
-        temiRobot.loadFloor(id,position)
+    fun loadFloor(id: Int, position: Position, onComplete: () -> Unit) {
+        temiRobot.loadFloor(id, position)
         val loadFloorStatus = object : OnLoadFloorStatusChangedListener {
             override fun onLoadFloorStatusChanged(status: Int) {
                 Status.currentLoadFloorStatus = status
@@ -33,7 +33,7 @@ class MultiFloor {
                     onComplete.invoke()
                     temiRobot.removeOnLoadFloorStatusChangedListener(this)
                 }
-                if (status == 1) {
+                if (status == -1) {
                     onComplete.invoke()
                     temiRobot.removeOnLoadFloorStatusChangedListener(this)
                 }
