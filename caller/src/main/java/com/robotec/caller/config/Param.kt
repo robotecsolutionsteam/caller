@@ -16,4 +16,8 @@ class Param {
     fun setSafetyMode() {
         temiRobot.navigationSafety
     }
+
+    fun getSerialNumber(): String? {
+        return temiRobot.serialNumber
+    }
 }

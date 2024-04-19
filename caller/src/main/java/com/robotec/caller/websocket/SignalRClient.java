@@ -15,16 +15,16 @@ public class SignalRClient {
     private static SignalRClient instance;
     private final ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
 
-    private static final String DATA_HUB_URL = "";
-    private static final String ROBOT_HUB_URL = "";
+//    private static final String DATA_HUB_URL = "";
+//    private static final String ROBOT_HUB_URL = "";
 
     private HubConnection hubConnectionData;
     private HubConnection hubConnectionRobot;
 
-    public SignalRClient() {
+    public SignalRClient(String dataHubUrl, String robotHubUrl) {
         try {
-            hubConnectionData = buildAndStartHubConnection(DATA_HUB_URL);
-            hubConnectionRobot = buildAndStartHubConnection(ROBOT_HUB_URL);
+            hubConnectionData = buildAndStartHubConnection(dataHubUrl);
+            hubConnectionRobot = buildAndStartHubConnection(robotHubUrl);
         } catch (Exception e) {
             Log.e("Robot", "Erro ao se conectar ao hub: " + e.getMessage());
         }
@@ -68,10 +68,10 @@ public class SignalRClient {
         }
     }
 
-    public static SignalRClient getInstance() {
+    public static SignalRClient getInstance(String robotHubUrl, String dataHubUrl) {
         try {
             if (instance == null) {
-                instance = new SignalRClient();
+                instance = new SignalRClient(robotHubUrl, dataHubUrl);
             }
             return instance;
         } catch (Exception e) {
