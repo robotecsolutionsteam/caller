@@ -1,0 +1,111 @@
+# Multi-Floor
+LoadFloor, GetFloors, etc.
+---
+
+* Importação
+* Permissões
+* Obter piso atual
+* Obter todos os pisos
+* Carregar piso
+
+## Importação
+
+<Row>
+  <Col>
+    Importar o Caller.
+  </Col>
+  <Col>
+
+    ```bash {{ title: "kotlin" }}
+    import com.robotec.caller.navigation.MultiFloor
+    ```
+  </Col>
+  <Col>
+    Colocar o MultiFloor em variável global.
+  </Col>
+  <Col>
+
+    ```bash {{ title: "kotlin" }}
+    private val multiFloor = MultiFloor()
+    ```
+  </Col>
+</Row>
+
+
+## Permissões
+<Row>
+  <Col>
+    Permissões Necessárias:
+    
+    * **MAP**
+  </Col>
+  <Col>
+
+    ```bash {{ title: "kotlin" }}
+    <!-- AndroidManifest.xml -->
+    <meta-data
+            android:name="@string/metadata_permissions"
+            android:value= "com.robotemi.permission.map" />
+    ```
+  </Col>
+</Row>
+
+## Obter piso atual
+
+<Row>
+  <Col>
+      Chamar o método **getCurrentFloor**.
+      ### Parâmetros
+      * None
+      ### Retornos
+      * floor -> Floor
+  </Col>
+  <Col>
+
+    ```bash {{ title: "kotlin" }}
+    val floor = multiFloor.getCurrentFloor()
+    ```
+  </Col>
+</Row>
+
+
+## Obter todos os pisos
+
+<Row>
+  <Col>
+      Chamar o método **getFloors**.
+      ### Parâmetros
+      * None
+
+      ### Retornos
+      * floors -> **List&lt;Floor&gt;**
+  </Col>
+  <Col>
+    ```bash {{ title: "kotlin" }}
+    val floors = multiFloor.getFloors()
+    ```
+  </Col>
+</Row>
+
+## Carregar piso
+
+<Row>
+  <Col>
+      Chamar o método **loadFloor**.
+      ### Parâmetros
+      * id -> **Int**
+      * position ->  **Position**
+
+      ### Retornos
+      * None
+  </Col>
+  <Col>
+
+    ```bash {{ title: "kotlin" }}
+    multiFloor.loadFloor(id, position){
+        código callback
+    }
+    ```
+  </Col>
+</Row>
+
