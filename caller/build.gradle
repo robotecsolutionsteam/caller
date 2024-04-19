@@ -8,7 +8,7 @@ android {
     compileSdk 34
 
     defaultConfig {
-        minSdk 23
+         minSdk 23
         targetSdk 34
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
@@ -48,10 +48,6 @@ dependencies {
     implementation 'com.squareup.okhttp3:okhttp:4.9.3'
     implementation 'com.squareup.okhttp3:logging-interceptor:4.9.1'
 
-    // external dependencies
-    implementation 'com.github.bumptech.glide:glide:4.14.1'
-    implementation "androidx.cardview:cardview:1.0.0"
-
     // retrofit
     implementation "com.squareup.retrofit2:retrofit:2.9.0"
     implementation "com.squareup.retrofit2:converter-gson:2.9.0"
@@ -62,4 +58,12 @@ dependencies {
     implementation "io.ktor:ktor-client-android:1.6.4"
     implementation "io.ktor:ktor-client-json:1.6.4"
     implementation "io.ktor:ktor-client-serialization:1.6.4"
+
+    implementation 'com.squareup.retrofit2:retrofit:2.9.0'
+    implementation 'com.squareup.retrofit2:converter-gson:2.9.0'
+
+    implementation 'com.squareup.okhttp3:okhttp:4.9.3'
+    implementation 'com.squareup.okhttp3:logging-interceptor:4.9.1'
+
+    implementation 'com.microsoft.signalr:signalr:7.0.0'
 }

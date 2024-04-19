@@ -1,7 +1,10 @@
 package com.robotec.caller.navigation
 
+import android.content.Context
 import android.util.Log
-import com.robotec.caller.utils.Request
+import android.widget.Toast
+import com.robotec.caller.listener.Status
+import com.robotec.caller.speak.Voice
 import com.robotemi.sdk.Robot
 import com.robotemi.sdk.TtsRequest
 import com.robotemi.sdk.listeners.OnGoToLocationStatusChangedListener
@@ -15,61 +18,73 @@ import com.robotemi.sdk.navigation.model.Position
 class Navigation {
 
     private var temiRobot: Robot = Robot.getInstance()
-    private val request = Request()
+    private var speak = Voice()
 
-    fun goTo(local: String, onComplete: () -> Unit) {
+    fun goToDistance(useTemi: Boolean, context: Context, onComplete: () -> Unit) {
         try {
-            val location = local.lowercase().trim { it <= ' ' }
+            if (useTemi) {
+                val distanceStatus = object : OnDistanceToDestinationChangedListener {
+                    override fun onDistanceToDestinationChanged(
+                        location: String,
+                        distance: Float,
+                    ) {
+                        Status.currentDistanceStatus = distance
+                        temiRobot.removeOnDistanceToDestinationChangedListener(this)
 
-            if (!temiRobot.locations.contains(location)) {
-                Log.w("Navigation", "Local não existe")
+                    }
+                }
+                temiRobot.addOnDistanceToDestinationChangedListener(distanceStatus)
+
+            } else {
+                Toast.makeText(context, "Sem uso do Temi", Toast.LENGTH_SHORT).show()
             }
+        } catch (e: Exception) {
+            Log.e("TemiCaller", "Erro ao calcular distancia")
+            onComplete.invoke()
+        }
+    }
 
-            temiRobot.goTo(location)
+    fun goTo(local: String, useTemi: Boolean, context: Context, onComplete: () -> Unit) {
+        try {
+            if (useTemi) {
+                val location = local.lowercase().trim { it <= ' ' }
 
-            val goToStatus = object : OnGoToLocationStatusChangedListener {
-                override fun onGoToLocationStatusChanged(
-                    location: String,
-                    status: String,
-                    descriptionId: Int,
-                    description: String,
-                ) {
-                    val distanceStatus = object : OnDistanceToDestinationChangedListener {
-                        override fun onDistanceToDestinationChanged(
-                            location: String,
-                            distance: Float,
-                        ) {
-                            Log.w("Navigation description", "Distance: $distance")
-                            temiRobot.removeOnDistanceToDestinationChangedListener(this)
+                if (!temiRobot.locations.contains(location)) {
+                    Toast.makeText(context, "Local não existe", Toast.LENGTH_SHORT).show()
+                    onComplete.invoke()
+                }
 
+                temiRobot.goTo(location)
+
+                val goToStatus = object : OnGoToLocationStatusChangedListener {
+                    override fun onGoToLocationStatusChanged(
+                        location: String,
+                        status: String,
+                        descriptionId: Int,
+                        description: String,
+                    ) {
+
+                        if (description == "Obstáculo de Altura" || description == "Obstáculo Lidar") {
+                            speak.startSpeak("Com licença, por favor", true, context) {}
                         }
-                    }
-                    temiRobot.addOnDistanceToDestinationChangedListener(distanceStatus)
+                        Status.currentNavigationStatus = status
+                        if (description.isNotBlank()) {
+                            if (status == "complete") {
+                                temiRobot.removeOnGoToLocationStatusChangedListener(this)
+                                onComplete.invoke()
 
-                    Log.w("Navigation", "Descrição: $description")
-                    if (description == "Obstáculo de Altura" || description == "Obstáculo Lidar") {
-                        temiRobot.speak(TtsRequest.create("Com licença, por favor", false))
-                    }
-
-                    if (description.isNotBlank()) {
-                        if (status == "complete") {
-                            com.robotec.caller.listener.Status.currentNavigationStatus = status
-                            Log.d("TemiCaller", "Status GOTO: $status")
-                            temiRobot.removeOnGoToLocationStatusChangedListener(this)
-                            onComplete.invoke()
-
-                        }
-                        if (status == "abort") {
-                            com.robotec.caller.listener.Status.currentNavigationStatus = status
-                            temiRobot.removeOnGoToLocationStatusChangedListener(this)
-                            Log.e("Navigation", "Status GOTO: $status")
-                            onComplete.invoke()
+                            }
+                            if (status == "abort") {
+                                temiRobot.removeOnGoToLocationStatusChangedListener(this)
+                                onComplete.invoke()
+                            }
                         }
                     }
                 }
+                temiRobot.addOnGoToLocationStatusChangedListener(goToStatus)
+            } else {
+                Toast.makeText(context, "Sem uso do Temi", Toast.LENGTH_SHORT).show()
             }
-            temiRobot.addOnGoToLocationStatusChangedListener(goToStatus)
-
         } catch (e: Exception) {
             Log.e("TemiCaller", "Erro ao navegar, local: $local")
             onComplete.invoke()
@@ -113,40 +128,39 @@ class Navigation {
         }
     }
 
-    fun returnBase(onComplete: () -> Unit) {
+    fun returnBase(useTemi: Boolean, context: Context, onComplete: () -> Unit) {
         try {
-            val locals = temiRobot.locations
+            if (useTemi) {
+                val locals = temiRobot.locations
 
-            temiRobot.goTo(locals[0])
+                temiRobot.goTo(locals[0])
 
-            val goToStatus = object : OnGoToLocationStatusChangedListener {
-                override fun onGoToLocationStatusChanged(
-                    location: String,
-                    status: String,
-                    descriptionId: Int,
-                    description: String,
-                ) {
-                    Log.d("Navigation description", description)
-                    if (description == "Obstáculo de Altura" || description == "Obstáculo Lidar") {
-                        temiRobot.speak(TtsRequest.create("Com licença, por favor", false))
-                    }
-
-                    Log.w("navegacao", description)
-                    if (description.isNotBlank()) {
-                        if (status == "complete") {
-                            Log.d("TemiCaller", "Status GOTO: $status")
-                            temiRobot.removeOnGoToLocationStatusChangedListener(this)
-                            onComplete.invoke()
+                val goToStatus = object : OnGoToLocationStatusChangedListener {
+                    override fun onGoToLocationStatusChanged(
+                        location: String,
+                        status: String,
+                        descriptionId: Int,
+                        description: String,
+                    ) {
+                        if (description == "Obstáculo de Altura" || description == "Obstáculo Lidar") {
+                            speak.startSpeak("Com licença, por favor", true, context) {}
                         }
-                        if (status == "abort") {
-                            temiRobot.removeOnGoToLocationStatusChangedListener(this)
-                            Log.e("Navigation", "Status GOTO: $status")
-                            onComplete.invoke()
+                        if (description.isNotBlank()) {
+                            if (status == "complete") {
+                                temiRobot.removeOnGoToLocationStatusChangedListener(this)
+                                onComplete.invoke()
+                            }
+                            if (status == "abort") {
+                                temiRobot.removeOnGoToLocationStatusChangedListener(this)
+                                onComplete.invoke()
+                            }
                         }
                     }
                 }
+                temiRobot.addOnGoToLocationStatusChangedListener(goToStatus)
+            } else {
+                Toast.makeText(context, "Sem uso do Temi", Toast.LENGTH_SHORT).show()
             }
-            temiRobot.addOnGoToLocationStatusChangedListener(goToStatus)
 
         } catch (e: Exception) {
             Log.e("TemiCaller", "Erro ao navegar")

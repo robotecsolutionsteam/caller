@@ -1,32 +1,37 @@
 package com.robotec.caller.follow
 
 import android.util.Log
-import com.robotec.caller.utils.Request
 import com.robotemi.sdk.Robot
+import com.robotec.caller.listener.Status
 import com.robotemi.sdk.listeners.OnBeWithMeStatusChangedListener
 import com.robotemi.sdk.listeners.OnConstraintBeWithStatusChangedListener
 
 class FollowMe {
 
     private var temiRobot: Robot = Robot.getInstance()
-    private val request = Request()
 
-    fun follow(onComplete: () -> Unit) {
+    fun follow(useTemi: Boolean, onComplete: () -> Unit) {
         try {
-            temiRobot.beWithMe()
-            val followStatus = object : OnBeWithMeStatusChangedListener {
-                override fun onBeWithMeStatusChanged(
-                      status: String,
-                ) {
-                    Log.d("TemiCaller", "Status follow: $status")
-                    if (status == "abort") {
-                        Log.d("TemiCaller", "Follow abortado")
-                        temiRobot.removeOnBeWithMeStatusChangedListener(this)
-                        onComplete.invoke()
+            if (useTemi){
+                temiRobot.beWithMe()
+
+                val followStatus = object : OnBeWithMeStatusChangedListener {
+                    override fun onBeWithMeStatusChanged(
+                        status: String,
+                    ) {
+                        Status.currentFollowStatus = status
+                        if (status == "abort") {
+                            temiRobot.removeOnBeWithMeStatusChangedListener(this)
+                            onComplete.invoke()
+                        }
                     }
                 }
+                temiRobot.addOnBeWithMeStatusChangedListener(followStatus)
+
+            } else {
+                Log.v("TemiCaller", "Sem usar o Follow Me")
+                onComplete.invoke()
             }
-            temiRobot.addOnBeWithMeStatusChangedListener(followStatus)
 
         } catch (e: Exception) {
               Log.e("TemiCaller", "Erro ao seguir [Me]")
@@ -34,23 +39,26 @@ class FollowMe {
         }
     }
 
-    fun followRestricted(onComplete: () -> Unit) {
+    fun followRestricted(useTemi: Boolean, onComplete: () -> Unit) {
         try {
-            temiRobot.constraintBeWith()
-            val followRestrictedStatus = object : OnConstraintBeWithStatusChangedListener {
-                override fun onConstraintBeWithStatusChanged(
-                      isConstraint: Boolean,
-                ) {
-                    Log.d("TemiCaller", "Status follow restrito: $isConstraint")
-                    if (isConstraint == false) {
-                          Log.d("TemiCaller", "Follow abortado")
-                          temiRobot.removeOnConstraintBeWithStatusChangedListener(this)
-                          onComplete.invoke()
+            if (useTemi) {
+                temiRobot.constraintBeWith()
+                val followRestrictedStatus = object : OnConstraintBeWithStatusChangedListener {
+                    override fun onConstraintBeWithStatusChanged(
+                        isConstraint: Boolean,
+                    ) {
+                        Status.currentFollowRestrictedStatus = isConstraint.toString()
+                        if (isConstraint == false) {
+                            temiRobot.removeOnConstraintBeWithStatusChangedListener(this)
+                            onComplete.invoke()
+                        }
                     }
-
                 }
+                temiRobot.addOnConstraintBeWithStatusChangedListener(followRestrictedStatus)
+            } else {
+                Log.v("TemiCaller", "Sem usar o followRestricted")
+                onComplete.invoke()
             }
-            temiRobot.addOnConstraintBeWithStatusChangedListener(followRestrictedStatus)
         } catch (e: Exception) {
               Log.e("TemiCaller", "Erro ao seguir [Restrito]")
               onComplete.invoke()
