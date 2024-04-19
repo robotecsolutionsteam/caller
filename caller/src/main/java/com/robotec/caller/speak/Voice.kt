@@ -17,7 +17,7 @@ class Voice {
     fun startSpeak(text: String, useTemi: Boolean, context: Context, onComplete: () -> Unit) {
         try {
             if (useTemi) {
-                temiRobot.speak(TtsRequest.create(text, false))
+                temiRobot.speak(TtsRequest.create(text, isShowOnConversationLayer = false, cached = true))
 
                 val speakStatus = object : Robot.TtsListener {
                     override fun onTtsStatusChanged(
@@ -134,10 +134,12 @@ class Voice {
                                 temiRobot.finishConversation()
                                 temiRobot.removeAsrListener(this)
                             }
+
                             asrResult.isEmpty() -> {
                                 temiRobot.finishConversation()
                                 temiRobot.removeAsrListener(this)
                             }
+
                             else -> {
                                 Status.currentAsrStatus = asrResult
                                 temiRobot.finishConversation()
@@ -151,12 +153,12 @@ class Voice {
                 Toast.makeText(context, "Sem uso do Temi", Toast.LENGTH_SHORT).show()
             }
 
-        }  catch (e: Exception) {
+        } catch (e: Exception) {
             Log.e("TemiCaller", "Erro ao reconhecer")
         }
     }
 
-    fun stopSpeak(useTemi: Boolean, context: Context,) {
+    fun stopSpeak(useTemi: Boolean, context: Context) {
         try {
             if (useTemi) {
                 temiRobot.cancelAllTtsRequests()
@@ -167,6 +169,24 @@ class Voice {
             Log.e("TemiCaller", "Erro ao cancelar a voz")
         }
 
+    }
+
+    fun token(text: String, useTemi: Boolean): Double? {
+        try {
+            if (useTemi) {
+                val textoLenght =  text.replace(" ", "")
+                val seg = textoLenght.length / 2
+                val div = seg * 9
+
+                return div / 60.0
+            } else {
+                return null
+            }
+
+        } catch (e: Exception) {
+            Log.e("TemiCaller", "Erro ao cancelar a voz")
+            return null
+        }
     }
 
     private fun enableWakeup() {

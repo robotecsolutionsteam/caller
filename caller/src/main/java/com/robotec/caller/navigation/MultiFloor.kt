@@ -1,5 +1,6 @@
 package com.robotec.caller.navigation
 
+import android.util.Log
 import com.robotec.caller.listener.Status
 import com.robotec.caller.utils.Request
 import com.robotemi.sdk.Robot
@@ -17,28 +18,43 @@ class MultiFloor {
     }
 
     fun getCurrentFloor(): Floor? {
-        return temiRobot.getCurrentFloor()
+        try {
+            return temiRobot.getCurrentFloor()
+        } catch (e: Exception) {
+            Log.e("TemiCaller", "Erro ao obter o estado atual multifloors")
+        }
+        return null
     }
 
-    fun getFloors(): List<Floor> {
-        return temiRobot.getAllFloors()
+    fun getFloors(): List<Floor>? {
+        try {
+            return temiRobot.getAllFloors()
+        } catch (e: Exception) {
+            Log.e("TemiCaller", "Erro ao obter o multifloors")
+        }
+        return null
     }
 
     fun loadFloor(id: Int, position: Position, onComplete: () -> Unit) {
-        temiRobot.loadFloor(id, position)
-        val loadFloorStatus = object : OnLoadFloorStatusChangedListener {
-            override fun onLoadFloorStatusChanged(status: Int) {
-                Status.currentLoadFloorStatus = status
-                if (status == 0) {
-                    onComplete.invoke()
-                    temiRobot.removeOnLoadFloorStatusChangedListener(this)
-                }
-                if (status == -1) {
-                    onComplete.invoke()
-                    temiRobot.removeOnLoadFloorStatusChangedListener(this)
+        try {
+            temiRobot.loadFloor(id, position)
+            val loadFloorStatus = object : OnLoadFloorStatusChangedListener {
+                override fun onLoadFloorStatusChanged(status: Int) {
+                    Status.currentLoadFloorStatus = status
+                    if (status == 0) {
+                        onComplete.invoke()
+                        temiRobot.removeOnLoadFloorStatusChangedListener(this)
+                    }
+                    if (status == -1) {
+                        onComplete.invoke()
+                        temiRobot.removeOnLoadFloorStatusChangedListener(this)
+                    }
                 }
             }
+            temiRobot.addOnLoadFloorStatusChangedListener(loadFloorStatus)
+        } catch (e: Exception) {
+            Log.e("TemiCaller", "Erro mudar de mapa")
+            onComplete.invoke()
         }
-        temiRobot.addOnLoadFloorStatusChangedListener(loadFloorStatus)
     }
 }

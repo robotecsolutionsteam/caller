@@ -1,4 +1,4 @@
-package com.robotec.caller
+package com.robotec.caller.utils
 
 import android.content.Context
 import android.view.LayoutInflater
@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.BaseAdapter
 import android.widget.TextView
+import com.robotec.caller.R
 
 class GridAdapter(var context: Context, var CardName: Array<String>) :
     BaseAdapter() {

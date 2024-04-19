@@ -9,9 +9,12 @@ import com.robotec.caller.databinding.ActivitySampleBinding
 import com.robotec.caller.speak.Voice
 import com.robotec.caller.follow.FollowMe
 import com.robotec.caller.utils.Config
+import com.robotec.caller.utils.Network
 
 import com.robotec.caller.listener.Status
 import com.robotec.caller.navigation.Navigation
+import com.robotec.caller.utils.GridAdapter
+
 
 class SampleActivity : ComponentActivity(){
 
@@ -21,6 +24,7 @@ class SampleActivity : ComponentActivity(){
     private val followMe = FollowMe()
     private val config = Config()
     private val speak = Voice()
+    private val net = Network
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -39,7 +43,9 @@ class SampleActivity : ComponentActivity(){
             "stopSpeak",
             "goTo",
             "returnBase",
-            "goToDistance"
+            "goToDistance",
+            "network",
+            "token"
         )
 
         val gridAdapter = GridAdapter(this@SampleActivity, features)
@@ -64,7 +70,7 @@ class SampleActivity : ComponentActivity(){
 
             if (position == 2) {
                 Log.i("Robot", "Iniciando [simpleSpeak] ...")
-                speak.startSpeak("Teste de voz.", true, this) {
+                speak.startSpeak("Olá, planeta Terra!", true, this) {
                     Log.v("Robot",  Status.currentSpeakStatus)
                 }
             }
@@ -120,6 +126,16 @@ class SampleActivity : ComponentActivity(){
                 navigation.goToDistance(true, this) {
                     Log.v("Robot",  Status.currentDistanceStatus.toString())
                 }
+            }
+
+            if (position == 11) {
+                Log.i("Robot", "Iniciando [network] ...")
+                net.startWifiCheck(this)
+            }
+
+            if (position == 12) {
+                val count = speak.token("Macaco caco caco", true)
+                Log.i("Robot", count.toString())
             }
         }
     }
