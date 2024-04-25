@@ -45,8 +45,7 @@ class SampleActivity : ComponentActivity(){
             "goTo",
             "returnBase",
             "goToDistance",
-            "network",
-            "token"
+            "network"
         )
 
         val gridAdapter = GridAdapter(this@SampleActivity, features)
@@ -132,27 +131,6 @@ class SampleActivity : ComponentActivity(){
             if (position == 11) {
                 Log.i("Robot", "Iniciando [network] ...")
                 net.startWifiCheck(this)
-            }
-
-            if (position == 12) {
-                val legendasComTempos = speak.token("Oi, Eu sou Rei, auxiliar dos garçons de Heineken. Vim até aqui te dar uma dica. sabia que a marca heineken é top, e fsf wfef fefw wefef wefewfwe fefe fefef fefefe fefef fe", true) // macaco, caco. caco
-
-                val handler = Handler()
-
-                // Variável para manter o controle do tempo decorrido
-                var tempoDecorrido: Long = 0
-
-                // Processar a sequência de legendas com seus tempos de fala
-                legendasComTempos.forEach { (legenda, tempo) ->
-                    // Adicionar um atraso proporcional ao tempo de fala de cada legenda
-                    handler.postDelayed({
-                        // Imprimir a legenda apenas quando for o momento correto
-                        println("Legenda: \"$legenda\"")
-                    }, tempoDecorrido)
-
-                    // Atualizar o tempo decorrido para a próxima legenda
-                    tempoDecorrido += (tempo).toLong()
-                }
             }
         }
     }
