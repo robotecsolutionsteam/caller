@@ -2,6 +2,7 @@ package com.robotec.caller
 
 import android.util.Log
 import android.os.Bundle
+import android.os.Handler
 import android.widget.AdapterView
 import androidx.activity.ComponentActivity
 import com.robotec.caller.databinding.ActivitySampleBinding
@@ -134,9 +135,32 @@ class SampleActivity : ComponentActivity(){
             }
 
             if (position == 12) {
-                val count = speak.token("Macaco caco caco", true)
-                Log.i("Robot", count.toString())
+                val legendasComTempos = speak.token("Oi, Eu sou Rei, auxiliar dos garçons de Heineken. Vim até aqui te dar uma dica. sabia que a marca heineken é top, e fsf wfef fefw wefef wefewfwe fefe fefef fefefe fefef fe", true) // macaco, caco. caco
+
+                val handler = Handler()
+
+                // Variável para manter o controle do tempo decorrido
+                var tempoDecorrido: Long = 0
+
+                // Processar a sequência de legendas com seus tempos de fala
+                legendasComTempos.forEach { (legenda, tempo) ->
+                    // Adicionar um atraso proporcional ao tempo de fala de cada legenda
+                    handler.postDelayed({
+                        // Imprimir a legenda apenas quando for o momento correto
+                        println("Legenda: \"$legenda\"")
+                    }, tempoDecorrido)
+
+                    // Atualizar o tempo decorrido para a próxima legenda
+                    tempoDecorrido += (tempo).toLong()
+                }
             }
         }
+    }
+
+    fun processarLegenda(legenda: String) {
+        // Aqui você pode implementar a lógica para processar a legenda,
+        // como reproduzir a fala com o tempo correspondente.
+        // Por enquanto, vou apenas imprimir a legenda para fins de demonstração.
+        println("Processando legenda: $legenda")
     }
 }

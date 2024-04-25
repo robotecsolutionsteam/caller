@@ -17,7 +17,9 @@ class Voice {
     fun startSpeak(text: String, useTemi: Boolean, context: Context, onComplete: () -> Unit) {
         try {
             if (useTemi) {
-                temiRobot.speak(TtsRequest.create(text, isShowOnConversationLayer = false, cached = true))
+
+                val tts = TtsRequest.create(text, isShowOnConversationLayer = false, cached = true)
+                temiRobot.speak(tts)
 
                 val speakStatus = object : Robot.TtsListener {
                     override fun onTtsStatusChanged(
@@ -171,22 +173,65 @@ class Voice {
 
     }
 
-    fun token(text: String, useTemi: Boolean): Double? {
+    fun subtitle(text: String, useTemi: Boolean): Map<String, Float> {
         try {
             if (useTemi) {
-                val textoLenght =  text.replace(" ", "")
-                val seg = textoLenght.length / 2
-                val div = seg * 9
+                val tamanhoMaximoLegenda = 79
+                val legendasComTempos = mutableMapOf<String, Float>()
 
-                return div / 60.0
+                val palavras = text.split(" ")
+
+                var legendaAtual = ""
+
+                for (palavra in palavras) {
+                    if (legendaAtual.length + palavra.length + 1 > tamanhoMaximoLegenda) {
+                        val tempo = time(legendaAtual.trim())
+                        legendasComTempos[legendaAtual.trim()] = tempo
+                        legendaAtual = ""
+                    }
+
+                    legendaAtual += if (legendaAtual.isEmpty()) palavra else " $palavra"
+                }
+
+                if (legendaAtual.isNotEmpty()) {
+                    val tempofinal = time(legendaAtual.trim())
+                    legendasComTempos[legendaAtual.trim()] = tempofinal
+                }
+
+                return legendasComTempos
             } else {
-                return null
+                return emptyMap()
             }
-
         } catch (e: Exception) {
             Log.e("TemiCaller", "Erro ao cancelar a voz")
-            return null
+            return emptyMap()
         }
+    }
+
+    fun replaceWord(text: String, find: String, replace: String): String {
+        return text.replace(find, replace, ignoreCase = true)
+    }
+
+    private fun time(text: String): Float {
+        val textoWithoutSpaces = text.replace(" ", "")
+        val punctuationList = mutableListOf<Char>()
+
+        var charCount = 0
+        for (char in textoWithoutSpaces) {
+            if (char == '?' || char == ',' || char == '!' || char == '.') {
+                punctuationList.add(char)
+            } else {
+                charCount++
+            }
+        }
+
+        val carac = punctuationList.size * 12
+        val seg = charCount / 2
+        val div = seg * 9
+
+        val tokenValue = (div+carac) / 60.0
+
+        return tokenValue.toFloat() * 1000
     }
 
     private fun enableWakeup() {
@@ -197,4 +242,5 @@ class Voice {
     private fun mutarAlexa() {
         temiRobot.muteAlexa()
     }
+
 }
