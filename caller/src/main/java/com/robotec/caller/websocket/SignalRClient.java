@@ -7,6 +7,7 @@ import com.microsoft.signalr.HubConnection;
 import com.microsoft.signalr.TransportEnum;
 import com.microsoft.signalr.HubConnectionBuilder;
 import com.robotec.caller.config.Param;
+import com.robotec.temiwebsocket.SocketAdapter;
 
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
@@ -21,14 +22,16 @@ public class SignalRClient {
 
     private HubConnection hubConnectionData;
     private HubConnection hubConnectionRobot;
+    private HubConnection hubConnectionAtividade;
 
     Boolean joinedGroup = false;
     Param param = new Param();
 
-    public SignalRClient(String dataHubUrl, String robotHubUrl) {
+    public SignalRClient(String dataHubUrl, String robotHubUrl, String atividadeHubUrl) {
         try {
             hubConnectionData = buildAndStartHubConnection(dataHubUrl);
             hubConnectionRobot = buildAndStartHubConnection(robotHubUrl);
+            hubConnectionAtividade = buildAndStartHubConnection(atividadeHubUrl);
         } catch (Exception e) {
             Log.e("Robot", "Erro ao se conectar ao hub: " + e.getMessage());
         }
@@ -72,16 +75,35 @@ public class SignalRClient {
         }
     }
 
-    public static SignalRClient getInstance(String robotHubUrl, String dataHubUrl) {
+    public static SignalRClient getInstance(String robotHubUrl, String dataHubUrl, String atividadeHubUrl) {
         try {
             if (instance == null) {
-                instance = new SignalRClient(robotHubUrl, dataHubUrl);
+                instance = new SignalRClient(robotHubUrl, dataHubUrl, atividadeHubUrl);
             }
             return instance;
         } catch (Exception e) {
             Log.e("Robot", "Falha ao conectar: " + e.getMessage());
             return instance;
         }
+    }
+
+    public void listenCommand(SocketAdapter socketAdapter) {
+        hubConnectionRobot.on("ReceberComando", (command) -> {
+            try {
+                hubConnectionRobot.send("RetornarStatusRobo", "Status " + command + ": start");
+            } catch (Exception e) {
+                Log.e("websocket", "Erro ao receber comando");
+            }
+            socketAdapter.readCommand(command, (callbacktxt) -> {
+                try {
+                    hubConnectionRobot.send("RetornarStatusRobo", callbacktxt+" - concluido");
+                    return null;
+                } catch (Exception e) {
+                    Log.e("websocket", "Erro ao receber comando");
+                }
+                return null;
+            });
+        }, String.class);
     }
 
     public void joinGroup() {
