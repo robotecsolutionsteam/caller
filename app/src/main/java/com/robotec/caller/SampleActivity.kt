@@ -2,6 +2,7 @@ package com.robotec.caller
 
 import android.util.Log
 import android.os.Bundle
+import android.os.Handler
 import android.widget.AdapterView
 import androidx.activity.ComponentActivity
 import com.robotec.caller.databinding.ActivitySampleBinding
@@ -9,9 +10,12 @@ import com.robotec.caller.databinding.ActivitySampleBinding
 import com.robotec.caller.speak.Voice
 import com.robotec.caller.follow.FollowMe
 import com.robotec.caller.utils.Config
+import com.robotec.caller.utils.Network
 
 import com.robotec.caller.listener.Status
 import com.robotec.caller.navigation.Navigation
+import com.robotec.caller.utils.GridAdapter
+
 
 class SampleActivity : ComponentActivity(){
 
@@ -21,6 +25,7 @@ class SampleActivity : ComponentActivity(){
     private val followMe = FollowMe()
     private val config = Config()
     private val speak = Voice()
+    private val net = Network
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -39,7 +44,8 @@ class SampleActivity : ComponentActivity(){
             "stopSpeak",
             "goTo",
             "returnBase",
-            "goToDistance"
+            "goToDistance",
+            "network"
         )
 
         val gridAdapter = GridAdapter(this@SampleActivity, features)
@@ -64,7 +70,7 @@ class SampleActivity : ComponentActivity(){
 
             if (position == 2) {
                 Log.i("Robot", "Iniciando [simpleSpeak] ...")
-                speak.startSpeak("Teste de voz.", true, this) {
+                speak.startSpeak("Olá, planeta Terra!", true, this) {
                     Log.v("Robot",  Status.currentSpeakStatus)
                 }
             }
@@ -121,6 +127,18 @@ class SampleActivity : ComponentActivity(){
                     Log.v("Robot",  Status.currentDistanceStatus.toString())
                 }
             }
+
+            if (position == 11) {
+                Log.i("Robot", "Iniciando [network] ...")
+                net.startWifiCheck(this)
+            }
         }
+    }
+
+    fun processarLegenda(legenda: String) {
+        // Aqui você pode implementar a lógica para processar a legenda,
+        // como reproduzir a fala com o tempo correspondente.
+        // Por enquanto, vou apenas imprimir a legenda para fins de demonstração.
+        println("Processando legenda: $legenda")
     }
 }
