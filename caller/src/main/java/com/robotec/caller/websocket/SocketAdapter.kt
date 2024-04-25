@@ -1,4 +1,4 @@
-package com.robotec.caller.websocket
+package com.robotec.temiwebsocket
 
 import android.app.Activity
 import android.content.Context
@@ -7,7 +7,7 @@ import com.robotec.caller.follow.FollowMe
 import com.robotec.caller.listener.Status
 import com.robotec.caller.movements.Movements
 import com.robotec.caller.navigation.Navigation
-import com.robotec.caller.sequences.Sequences
+
 import com.robotec.caller.speak.Voice
 import com.robotec.caller.config.Param
 import com.robotec.caller.navigation.Maps
@@ -17,14 +17,14 @@ import android.widget.Toast
 import com.robotec.caller.utils.VideoHelper
 
 
-open class SocketAdapter(private var context: Context,private var useTemi: Boolean, videoView: VideoView) {
+open class SocketAdapter(private var context: Context, videoView: VideoView) {
     private val voice = Voice()
     private val navigation = Navigation()
     private val follow = FollowMe()
     private val movements = Movements()
     private val listener = Status
-    private val sequences = Sequences()
     private val videoView = videoView
+
     private val videoHelper = VideoHelper(context)
     private val config = Param()
     private val map = Maps()
@@ -36,39 +36,70 @@ open class SocketAdapter(private var context: Context,private var useTemi: Boole
         var guid = json.getString("GuidAtividade")
 
         if (action == "Speak") {
-            voice.finishSpeak(data, useTemi, context) {
-                callbacktxt(guid)
+            val talkFaceId = this.context.getResources()
+                .getIdentifier(
+                    JSONObject(data).getString("talkFace"),
+                    "raw",
+                    this.context.getPackageName()
+                );
+            val idleFaceId = this.context.getResources()
+                .getIdentifier(
+                    JSONObject(data).getString("idleFace"),
+                    "raw",
+                    this.context.getPackageName()
+                );
+            val text = JSONObject(data).getString("text")
+            voice.startSpeak(text, true, context) {
+                (context as? Activity)?.runOnUiThread() {
+                    if (talkFaceId != 0) {
+                        (context as? Activity)?.runOnUiThread() {
+                            videoHelper.playVideo(videoView, talkFaceId)
+                        }
+                    }
+                }
+            }
+            voice.finishWithoutSpeak(true, context) {
+                (context as? Activity)?.runOnUiThread() {
+                    if (idleFaceId != 0) {
+                        (context as? Activity)?.runOnUiThread() {
+                            videoHelper.playVideo(videoView, idleFaceId)
+                        }
+                    }
+                    callbacktxt(guid)
+                }
             }
         }
         if (action == "WakeUp") {
-            voice.wakeUp(useTemi, context) {
+            voice.wakeUp(true, context) {
                 callbacktxt(guid)
             }
         }
         if (action == "GoTo") {
-            navigation.goTo(data,useTemi, context) {
+            navigation.goTo(data, true, context) {
                 callbacktxt(guid)
             }
         }
         if (action == "Follow") {
-            follow.follow(useTemi) {}
+            follow.follow(true) {}
         }
 
         if (action == "Repose") {
             navigation.reposicionar {
-                callbacktxt(guid) }
-        }
-        if (action == "StartSequence") {
-            sequences.startSequence(data)
+                callbacktxt(guid)
+            }
         }
 
         if (action == "Move") {
             val dist_x = JSONObject(data).getString("x").toFloat()
             val dist_y = JSONObject(data).getString("y").toFloat()
             val times = JSONObject(data).getString("times").toInt()
+            var completedMovements = 0
             repeat(times) {
                 movements.moveRobot(dist_x, dist_y) {
-                    callbacktxt(guid)
+                    completedMovements++
+                    if (completedMovements == times - 1) {
+                        callbacktxt(guid)
+                    }
                 }
             }
         }
@@ -89,32 +120,36 @@ open class SocketAdapter(private var context: Context,private var useTemi: Boole
             }
         }
         if (action == "ChangeFace") {
-            val video = this.context.resources
+            val video = this.context.getResources()
                 .getIdentifier(data, "raw", this.context.getPackageName());
             if (video == 0) {
                 callbacktxt(guid)
                 return
             }
-            (context as? Activity)?.runOnUiThread {
+            (context as? Activity)?.runOnUiThread() {
                 videoHelper.playVideo(videoView, video)
                 callbacktxt(guid)
             }
         }
 
-        if (action == "TalkMp3") {
-            val audio = this.context.resources
-                .getIdentifier(data, "raw", this.context.getPackageName());
+        if (action == "PlayAudio") {
+            val audio = this.context.getResources()
+                .getIdentifier(JSONObject(data).getString("audioId"), "raw", this.context.getPackageName());
             if (audio == 0) {
                 callbacktxt(guid)
                 return
             }
-            val talkFace = JSONObject(data).getString("talkFace")
+
             val talkFaceId = this.context.getResources()
-                .getIdentifier(talkFace, "raw", this.context.getPackageName());
-            val idleFace = JSONObject(data).getString("idleFace")
+                .getIdentifier(
+                    JSONObject(data).getString("talkFace"),
+                    "raw",
+                    this.context.getPackageName()
+                );
+
             val idleFaceId = this.context.getResources()
-                .getIdentifier(idleFace, "raw", this.context.getPackageName());
-            if (talkFace != "") {
+                .getIdentifier(JSONObject(data).getString("idleFace"), "raw", this.context.getPackageName());
+            if (talkFaceId != 0) {
                 (context as? Activity)?.runOnUiThread() {
                     videoHelper.playVideo(videoView, talkFaceId)
                 }
@@ -122,14 +157,16 @@ open class SocketAdapter(private var context: Context,private var useTemi: Boole
 
             videoHelper.playAudio(audio) {
                 (context as? Activity)?.runOnUiThread() {
-                    videoHelper.playVideo(videoView, idleFaceId)
+                    if(idleFaceId != 0) {
+                        videoHelper.playVideo(videoView, idleFaceId)
+                    }
                     callbacktxt(guid)
                 }
             }
         }
 
-        if (action == "PlayVideoOnce") {
-            val video = this.context.resources
+        if (action == "PlayVideo") {
+            val video = this.context.getResources()
                 .getIdentifier(data, "raw", this.context.getPackageName());
             if (video == 0) {
                 callbacktxt(guid)
@@ -149,8 +186,5 @@ open class SocketAdapter(private var context: Context,private var useTemi: Boole
         if (action == "MapList") {
             callbacktxt(map.mapList {}.toString())
         }
-
-
-
     }
 }

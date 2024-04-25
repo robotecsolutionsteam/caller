@@ -6,6 +6,7 @@ import com.microsoft.signalr.HubConnectionState;
 import com.microsoft.signalr.HubConnection;
 import com.microsoft.signalr.TransportEnum;
 import com.microsoft.signalr.HubConnectionBuilder;
+import com.robotec.caller.config.Param;
 
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
@@ -20,6 +21,9 @@ public class SignalRClient {
 
     private HubConnection hubConnectionData;
     private HubConnection hubConnectionRobot;
+
+    Boolean joinedGroup = false;
+    Param param = new Param();
 
     public SignalRClient(String dataHubUrl, String robotHubUrl) {
         try {
@@ -80,6 +84,10 @@ public class SignalRClient {
         }
     }
 
+    public void joinGroup() {
+        hubConnectionRobot.send("JoinGroup", param.getSerialNumber());
+    }
+
     private void startConnectionCheck() {
         final Runnable connectionCheck = new Runnable() {
             public void run() {
@@ -103,6 +111,10 @@ public class SignalRClient {
             } catch (Exception e) {
                 Log.e("websocket", "Falha ao conectar");
             }
+        }
+        else if(!joinedGroup){
+            joinGroup();
+            joinedGroup = true;
         }
     }
 }

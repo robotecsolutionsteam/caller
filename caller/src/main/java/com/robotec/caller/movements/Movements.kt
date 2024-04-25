@@ -77,6 +77,7 @@ class Movements {
                     }
                 }
             }
+            temiRobot.addOnMovementStatusChangedListener(moveStatus)
         } catch (e: Exception) {
             Log.e("TemiCaller", "Erro ao virar o robô")
             onComplete.invoke()
