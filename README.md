@@ -2,7 +2,7 @@
   <a href="https://kotlinlang.org/"><img alt="Kotlin" src="https://img.shields.io/badge/Kotlin-Latest%20Version-purple.svg"></a>
   <a href="https://developer.android.com/about/versions/6.0"><img alt="SDK 23" src="https://img.shields.io/badge/SDK-23-orange.svg"></a>
   <a href="https://github.com/robotemi/sdk"><img alt="robotemi version" src="https://img.shields.io/badge/robotemi-1.132.1-green.svg"></a>
-	<a href="https://jitpack.io/#robotecsolutionsteam/caller"><img alt="jitpack" src="https://jitpack.io/v/robotecsolutionsteam/caller.svg"></a>
+  <a href="https://jitpack.io/#robotecsolutionsteam/caller"><img alt="jitpack" src="https://jitpack.io/v/robotecsolutionsteam/caller.svg"></a>
 
 </p>
 
